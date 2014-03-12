@@ -126,6 +126,7 @@ namespace mmdb  {
         bool  FileEnd     ();
         inline bool  Success   () { return IOSuccess; }
         inline void  SetSuccess() { IOSuccess = true; }
+        void  flush       ();
         void  shut        ();
 
         // ---- binary I/O

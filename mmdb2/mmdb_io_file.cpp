@@ -127,7 +127,7 @@ namespace mmdb  {
          else return P;
     }
 
-    cpstr ChangeExt ( pstr FilePath, cpstr newExt, int syskey )  {
+    cpstr ChangeExt ( pstr FilePath, cpstr newExt, SYSKEY syskey )  {
     int i;
       i = strlen(FilePath)-1;
       if (syskey==syskey_unix)
@@ -610,6 +610,20 @@ namespace mmdb  {
 
       return  EofFile && (BufLen==0);
 
+    }
+
+    void  File::flush ()  {
+
+      if (hFile!=NULL)  {
+        if (!StdIO)  {
+    #ifndef _MSC_VER
+          if (gzipIO==ARCH_NONE)
+            fflush ( hFile );
+    #else
+          fflush ( hFile );
+    #endif
+        }
+      }
     }
 
     void  File::shut ()  {

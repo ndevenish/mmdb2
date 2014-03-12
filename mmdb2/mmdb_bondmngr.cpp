@@ -82,8 +82,8 @@ namespace mmdb  {
                 graph.GetVertices ( V,nV );
                 graph.GetEdges    ( E,nE );
                 for (i=0;i<nE;i++)  {
-                  k1 = V[E[i]->GetVertex1()]->GetUserID();
-                  k2 = V[E[i]->GetVertex2()]->GetUserID();
+                  k1 = V[E[i]->GetVertex1()-1]->GetUserID();
+                  k2 = V[E[i]->GetVertex2()-1]->GetUserID();
                   res->atom[k1]->AddBond ( res->atom[k2],E[i]->GetType() );
                   res->atom[k2]->AddBond ( res->atom[k1],E[i]->GetType() );
                 }
