@@ -96,22 +96,24 @@ namespace mmdb  {
       if (Date9[7]!='0')  strncpy ( &(Date11[7]),"19",2 );
                     else  strncpy ( &(Date11[7]),"20",2 );
       strncpy ( &(Date11[9]),&(Date9[7]),2 );
-    } else  {      // DD-MM-YY -> DD-MMM-YYYY
+      Date11[2]  = '-';
+      Date11[6]  = '-';
+      Date11[11] = char(0);
+    } else  {     // DD-MM-YY -> DD-MMM-YYYY
       strncpy ( Date11,Date9,3 );
       i = 0;
       while ((i<12) && (strncmp(nMonth[i],&(Date9[3]),2)))  i++;
-      if (i<12)  strncpy ( &(Date11[3]),Month[i],3 );
-      else  {
-        strncpy ( &(Date11[3]),&(Date9[3]),2 );
-        Date11[5] = 'X';
-      }
-      if (Date9[6]!='0')  strncpy ( &(Date11[7]),"19",2 );
+      if (i<12)  {
+        strncpy ( &(Date11[3]),Month[i],3 );
+          if (Date9[6]!='0')  strncpy ( &(Date11[7]),"19",2 );
                     else  strncpy ( &(Date11[7]),"20",2 );
-      strncpy ( &(Date11[9]),&(Date9[6]),2 );
+        strncpy ( &(Date11[9]),&(Date9[6]),2 );
+        Date11[2]  = '-';
+        Date11[6]  = '-';
+        Date11[11] = char(0);
+      } else
+        strcpy ( Date11,"           " );
     }
-    Date11[2]  = '-';
-    Date11[6]  = '-';
-    Date11[11] = char(0);
   }
 
   void  Date11to9 ( cpstr Date11, pstr Date9 )  {
@@ -122,19 +124,20 @@ namespace mmdb  {
     if (i<12)  {   // DD-MMM-YYYY -> DD-MMM-YY
       strncpy ( Date9,Date11,7 );
       strncpy ( &(Date9[7]),&(Date11[9]),2 );
+      Date9[2] = '-';
+      Date9[6] = '-';
     } else  {      // DD-MM-YYYY -> DD-MMM-YY
       strncpy ( Date9,Date11,3 );
       i = 0;
       while ((i<12) && (strncmp(nMonth[i],&(Date11[3]),2)))  i++;
-      if (i<12)  strncpy ( &(Date9[3]),Month[i],3 );
-      else  {
-        strncpy ( &(Date9[3]),&(Date11[3]),2 );
-        Date9[5] = 'X';
-      }
-      strncpy ( &(Date9[7]),&(Date11[8]),2 );
+      if (i<12)  {
+        strncpy ( &(Date9[3]),Month[i],3 );
+        strncpy ( &(Date9[7]),&(Date11[8]),2 );
+        Date9[2] = '-';
+        Date9[6] = '-';
+      } else
+        strcpy ( Date9,"         " );
     }
-    Date9[2] = '-';
-    Date9[6] = '-';
   }
 
   void  Date9toCIF ( cpstr Date9, pstr DateCIF )  {
