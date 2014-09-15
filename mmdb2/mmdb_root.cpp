@@ -1681,15 +1681,15 @@ namespace mmdb  {
   }
 
   int  Root::PutAtom ( int            index,
-                            int            serNum,
-                            const AtomName atomName,
-                            const ResName  resName,
-                            const ChainID  chainID,
-                            int            seqNum,
-                            const InsCode  insCode,
-                            const AltLoc   altLoc,
-                            const SegID    segID,
-                            const Element  element )  {
+                       int            serNum,
+                       const AtomName atomName,
+                       const ResName  resName,
+                       const ChainID  chainID,
+                       int            seqNum,
+                       const InsCode  insCode,
+                       const AltLoc   altLoc,
+                       const SegID    segID,
+                       const Element  element )  {
 
   //   An atom with the specified properties is put into the
   // structure. The current model is used; if no model is
@@ -1766,15 +1766,14 @@ namespace mmdb  {
   }
 
 
-  int Root::PutAtom ( int    index,  // same meaning as above
-                           PAtom A,      // pointer to completed atom
-                                          // class
-                           int    serNum  // 0 means that the serial
-                                          // number will be set equal
-                                          // to "index". Otherwise,
-                                          // the serial number is set
-                                          // to the specified value
-                         )  {
+  int Root::PutAtom ( int   index,  // same meaning as above
+                      PAtom A,      // pointer to completed atom class
+                      int   serNum  // 0 means that the serial
+                                    // number will be set equal
+                                    // to "index". Otherwise,
+                                    // the serial number is set
+                                    // to the specified value
+                    )  {
   int i,kndex,RC,sn;
 
     if (!A)  return -1;
@@ -2125,7 +2124,7 @@ namespace mmdb  {
                                   int           label_seq_id,
                                   int           label_entity_id,
                                   const InsCode insCode,
-                                  bool       Replace )  {
+                                  bool          Replace )  {
 
     if ((!resName[0]) && (insCode[0]!=char(1)))
       return Error_EmptyResidueName;
