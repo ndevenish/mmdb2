@@ -2553,8 +2553,8 @@ namespace mmdb  {
   }
 
   int Root::GetTMatrix ( mat44 & TMatrix, int Nop,
-                              int cellshift_a, int cellshift_b,
-                              int cellshift_c )  {
+                         int cellshift_a, int cellshift_b,
+                         int cellshift_c )  {
   //  GetTMatrix(..) calculates and returns the coordinate transformation
   //  matrix, which converts orthogonal coordinates according to
   //  the symmetry operation number Nop and places them into unit cell
@@ -2571,9 +2571,9 @@ namespace mmdb  {
 
 
   int Root::GetUCTMatrix ( mat44 & TMatrix, int Nop,
-                                realtype x, realtype y, realtype z,
-                                int cellshift_a, int cellshift_b,
-                                int cellshift_c )  {
+                           realtype x, realtype y, realtype z,
+                           int cellshift_a, int cellshift_b,
+                           int cellshift_c )  {
   //  GetUCTMatrix(..) calculates and returns the coordinate
   //  transformation matrix, which converts orthogonal coordinates
   //  according to the symmetry operation number Nop. Translation
@@ -2594,8 +2594,8 @@ namespace mmdb  {
 
 
   int Root::GetFractMatrix ( mat44 & TMatrix, int Nop,
-                                  int cellshift_a, int cellshift_b,
-                                  int cellshift_c )  {
+                             int cellshift_a, int cellshift_b,
+                             int cellshift_c )  {
   //  GetFractMatrix(..) calculates and returns the coordinate
   //  transformation matrix, which converts fractional coordinates
   //  according to the symmetry operation number Nop and places them

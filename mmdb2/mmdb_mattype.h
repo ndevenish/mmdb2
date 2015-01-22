@@ -189,9 +189,9 @@ namespace mmdb  {
 
   // ------------------------------------------------------------
 
-  inline int mround ( realtype X )  { return  (int)floor(X+0.5);   }
-  inline int ifloor ( realtype X )  { return  (int)floor(X);       }
-  inline int Abs    ( int x )       { return ( x >= 0 ? x : -x );  }
+  inline int mround ( realtype X )  { return (int)floor(X+0.5);   }
+  inline int ifloor ( realtype X )  { return (int)floor(X);       }
+  inline int Abs    ( int x )       { return ( x >= 0 ? x : -x ); }
 
   inline void ISwap ( int & x, int & y )
   { int  b = x;  x = y;  y = b; }

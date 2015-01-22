@@ -744,10 +744,9 @@ namespace mmdb  {
         ACopy[i][j] = A[i][j];
   }
 
-  bool isMat4Eq ( mat44 & A, mat44 & B, realtype eps,
-                     bool rotOnly )  {
+  bool isMat4Eq ( mat44 & A, mat44 & B, realtype eps, bool rotOnly )  {
   // returns true if A is equal to B within precision eps
-  int     i,j,k;
+  int  i,j,k;
   bool Eq;
 
     if (rotOnly)  k = 3;

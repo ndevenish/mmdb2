@@ -198,7 +198,7 @@ namespace mmdb  {
   extern void  Mat4Copy  ( mat44 & A, mat44 & ACopy );
   extern void  Mat3Copy  ( mat33 & A, mat33 & ACopy );
   extern bool  isMat4Eq  ( mat44 & A, mat44 & B, realtype eps,
-                             bool rotOnly );
+                           bool rotOnly );
 
   extern void TransformXYZ   ( mat44 & T,
                               realtype & X, realtype & Y, realtype & Z );
