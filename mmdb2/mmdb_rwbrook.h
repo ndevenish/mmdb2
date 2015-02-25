@@ -61,6 +61,7 @@
 //                   mmdb_f_wremark_  ( writes a remark statement         )
 //                   mmdb_f_setter
 //                   mmdb_f_sethet
+//                   mmdb_f_getnofncsmates_
 //                   rberrstop_       ( error messenger                   )
 //                   rbcheckerr_      ( a simple error messenger          )
 //
