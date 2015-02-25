@@ -907,6 +907,21 @@ FORTRAN_SUBR ( MMDB_F_SETHET, mmdb_f_sethet,
                ( int * iUnit, int * iRet ) );
 
 
+// ------------------------------------------------------------------
+
+//   mmdb_f_getnofncsmates_(..) returns the number of NCS mates not
+//  given in the file (iGiven=0).
+//
+//  Negative returns N<0  mean an error.
+//
+//  FORTRAN equivalent:   subroutine MMDB_F_GetNofNCSMates ( iUnit,N )
+//  ~~~~~~~~~~~~~~~~~~~   integer  iUnit,N
+
+FORTRAN_SUBR ( MMDB_F_GETNOFNCSMATES, mmdb_f_getnofncsmates,
+               ( int * iUnit, int * N ),
+               ( int * iUnit, int * N ),
+               ( int * iUnit, int * N ) );
+
 
 // ------------------------------------------------------------------
 

@@ -154,6 +154,11 @@ class Channel {
                          mmdb::realtype & cell_gammas,
                          mmdb::realtype & cell_vs );
 
+    int  GetNumberOfNCSMates();  // Returns the number of
+                                 // NCS mates not given in
+                                 // the file (iGiven==0)
+
+
     void MakeCoordStructure();
     void Read ();
     void Write();
@@ -247,6 +252,12 @@ void Channel::MakeCoordStructure()  {
     MMDBManager = new mmdb::Manager();
     MMDBManager->SetFlag ( mmdb::MMDBF_AllowDuplChainID );
   }
+}
+
+int Channel::GetNumberOfNCSMates()  {
+// Returns the number of NCS mates not given in the file (iGiven==0)
+  if (!MMDBManager)  return RWBERR_NoData;
+  return MMDBManager->GetNumberOfNCSMates();
 }
 
 void Channel::Read()  {
@@ -1700,6 +1711,39 @@ mmdb::PAtom atom;
   }
 
   if (atom->Het)  *isHet = 1;      // HETATM
+
+}
+
+
+
+// ------------------------------------------------------------------
+
+//   mmdb_f_getnofncsmates_(..) returns the number of NCS mates not
+//  given in the file (iGiven=0).
+//
+//  Negative returns N<0  mean an error.
+//
+//  FORTRAN equivalent:   subroutine MMDB_F_GetNofNCSMates ( iUnit,N )
+//  ~~~~~~~~~~~~~~~~~~~   integer  iUnit,N
+
+FORTRAN_SUBR ( MMDB_F_GETNOFNCSMATES, mmdb_f_getnofncsmates,
+               ( int * iUnit, int * N ),
+               ( int * iUnit, int * N ),
+               ( int * iUnit, int * N ) )  {
+int k;
+
+  strcpy ( LastFunc,"mmdb_f_getnofncsmates" );
+  LastUnit = *iUnit;
+
+  k = GetChannel ( *iUnit );
+  if (k<0)  {
+    *N     = RWBERR_NoChannel;
+    LastRC = *N;
+    return;
+  }
+
+  *N = channel[k]->GetNumberOfNCSMates();
+  return;
 
 }
 
