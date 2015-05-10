@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    14.09.13   <--  Date of Last Modification.
+//    10.05.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //  **** Classes :  mmdb::Root
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -986,20 +986,21 @@ namespace mmdb  {
           crModel0->nChains = k;
         }
       }
-      if (CleanKey & PDBCLEAN_CHAIN_ORDER)
+      if (CleanKey & PDBCLEAN_CHAIN_ORDER)  {
         for (i=0;i<nAtoms;i++)
           if (atom[i])  {
             crChain0 = atom[i]->GetChain();
             crChain0->nWeights++;
             crChain0->Weight += atom[i]->serNum;
           }
-      else
+      } else  {
         for (i=0;i<nAtoms;i++)
           if (atom[i])  {
             crChain0 = atom[i]->GetChain();
             crChain0->nWeights++;
             crChain0->Weight += atom[i]->GetIndex();
           }
+      }
       for (i=0;i<nModels;i++)  {
         crModel0 = model[i];
         if (crModel0)  {

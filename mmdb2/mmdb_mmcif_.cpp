@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    10.05.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -36,7 +36,7 @@
 //                  mmdb::mmcif::Data     ( mmCIF data block  )
 //                  mmdb::mmcif::File     ( mmCIF file        )
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -1548,8 +1548,8 @@ namespace mmdb  {
     int i,j;
       Category::write ( f );
       f.WriteInt ( &nRows );
-      if ((nTags>0) && (nRows>0))
-        for (i=0;i<nRows;i++)
+      if ((nTags>0) && (nRows>0))  {
+        for (i=0;i<nRows;i++)  {
           if (field[i])  {
             j = 1;
             f.WriteInt ( &j );
@@ -1559,6 +1559,8 @@ namespace mmdb  {
             j = 0;
             f.WriteInt ( &j );
           }
+        }
+      }
       f.WriteInt ( &iColumn );
     }
 

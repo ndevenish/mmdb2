@@ -478,7 +478,7 @@ namespace mmdb  {
                       (StepSize[i]*StepSize[i]);
           X[i]      = TempI+StepSize[i];
           if (i<N)
-            for (j=i+1;j<=N;j++)
+            for (j=i+1;j<=N;j++)  {
               if (!Freese[j])  {
                 TempJ = X[j];
                 X[j] += StepSize[j];
@@ -490,6 +490,7 @@ namespace mmdb  {
                 X[j]      = TempJ;
               } else
                 Hsn[i][j] = 0.0;
+            }
           X[i] = TempI;
         } else
           for (j=i;j<=N;j++)

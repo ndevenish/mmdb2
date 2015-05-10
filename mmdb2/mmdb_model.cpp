@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    10.05.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -46,7 +46,7 @@
 //                  mmdb::CisPep          ( CisPep data                )
 //                  mmdb::Model        ( PDB model                     )
 //
-//  Copyright (C) E. Krissinel 2000-2013
+//  Copyright (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -2116,14 +2116,15 @@ namespace mmdb  {
     strcpy ( chainID2," "    );  // chain ID of 2nd linked atom
     seqNum2 = 0;                 // sequence number of 2nd linked atom
     strcpy ( insCode2," "    );  // insertion code of 2nd linked atom
-    s1 = 1;  // sym id of 1st atom
-    i1 = 5;
-    j1 = 5;
-    k1 = 5;
-    s2 = 1;  // sym id of 2nd atom
-    i2 = 5;
-    j2 = 5;
-    k2 = 5;
+    s1   = 1;  // sym id of 1st atom
+    i1   = 5;
+    j1   = 5;
+    k1   = 5;
+    s2   = 1;  // sym id of 2nd atom
+    i2   = 5;
+    j2   = 5;
+    k2   = 5;
+    dist = -1.0;  // no distance
   }
 
 
@@ -2157,6 +2158,9 @@ namespace mmdb  {
     PutInteger ( &(S[70]),j2,1 );
     PutInteger ( &(S[71]),k2,1 );
 
+    if (dist>0.0)
+      PutRealF ( &(S[73]),dist,5,3 );
+
   }
 
 
@@ -2183,6 +2187,8 @@ namespace mmdb  {
 
     Loop->AddLoopTag ( CIFTAG_CONN_PTNR1_SYMMETRY );
     Loop->AddLoopTag ( CIFTAG_CONN_PTNR2_SYMMETRY );
+
+    Loop->AddLoopTag ( CIFTAG_CONN_DIST );
 
   }
 
@@ -2219,6 +2225,8 @@ namespace mmdb  {
     sprintf ( S,"%i%i%i%i",s2,i2,j2,k2 );
     Loop->AddString  ( S );
 
+    Loop->AddReal    ( dist     );
+
   }
 
   ERROR_CODE Link::ConvertPDBASCII ( cpstr S )  {
@@ -2244,6 +2252,8 @@ namespace mmdb  {
     GetInteger   ( i2,&(S[69]),1 );
     GetInteger   ( j2,&(S[70]),1 );
     GetInteger   ( k2,&(S[71]),1 );
+
+    if (!GetReal(dist,&(S[73]),5))  dist = -1.0;
 
     return Error_NoError;
 
@@ -2336,6 +2346,10 @@ namespace mmdb  {
       s2 = atoi(S);
     }
 
+    rc = CIFGetReal ( dist,Loop,CIFTAG_CONN_DIST,n );
+    if (rc==Error_NoData)   return Error_EmptyCIF;
+    if (rc!=Error_NoError)  return rc;
+
     n++;
 
     return Error_NoError;
@@ -2368,10 +2382,12 @@ namespace mmdb  {
     j2 = PLink(Link)->j2;
     k2 = PLink(Link)->k2;
 
+    dist = PLink(Link)->dist;
+
   }
 
   void  Link::write ( io::RFile f )  {
-  byte Version=1;
+  byte Version=2;
 
     f.WriteByte ( &Version    );
 
@@ -2398,6 +2414,8 @@ namespace mmdb  {
     f.WriteInt ( &i2 );
     f.WriteInt ( &j2 );
     f.WriteInt ( &k2 );
+
+    f.WriteReal ( &dist );
 
   }
 
@@ -2429,6 +2447,9 @@ namespace mmdb  {
     f.ReadInt ( &i2 );
     f.ReadInt ( &j2 );
     f.ReadInt ( &k2 );
+
+    if (Version>1)
+      f.ReadReal ( &dist );
 
   }
 
@@ -2553,7 +2574,7 @@ namespace mmdb  {
   void  LinkR::MakeCIF ( mmcif::PData CIF, int N )  {
   UNUSED_ARGUMENT(N);
   mmcif::PLoop Loop;
-  int         RC;
+  int          RC;
 
     RC = CIF->AddLoop ( CIFCAT_STRUCT_LINKR,Loop );
     if (RC!=mmcif::CIFRC_Ok) // the category was (re)created, provide tags

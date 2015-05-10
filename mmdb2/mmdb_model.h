@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    10.05.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -46,7 +46,7 @@
 //                  mmdb::CisPep          ( CisPep data                )
 //                  mmdb::Model        ( PDB model                     )
 //
-//  Copyright (C) E. Krissinel 2000-2013
+//  Copyright (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -423,6 +423,7 @@ namespace mmdb  {
       InsCode  insCode2;  // insertion code of 2nd linked atom
       int      s1,i1,j1,k1;  // sym id of 1st atom
       int      s2,i2,j2,k2;  // sym id of 2nd atom
+      realtype dist;      // link distance
 
       Link ();
       Link ( cpstr S );
