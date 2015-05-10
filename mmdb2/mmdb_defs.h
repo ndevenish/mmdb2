@@ -48,7 +48,7 @@ namespace mmdb  {
   enum  MMDB_VERSION  {
     MAJOR_VERSION = 2,  //!< MMDB major version
     MINOR_VERSION = 0,  //!< MMDB minor version
-    MICRO_VERSION = 1   //!< MMDB micro version
+    MICRO_VERSION = 2   //!< MMDB micro version
   };
 
   //  =======================  types  =================================
