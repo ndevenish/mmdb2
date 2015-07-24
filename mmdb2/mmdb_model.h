@@ -969,7 +969,7 @@ namespace mmdb  {
 
       //  ----  Working Links
 
-      int    GetNumberOfLinks ();
+      int   GetNumberOfLinks ();
       PLink          GetLink ( int serialNum ); // 1<=serNum<=NofLinks
       PLinkContainer GetLinks() { return &links; }
 

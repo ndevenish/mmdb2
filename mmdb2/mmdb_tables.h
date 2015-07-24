@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    24.07.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -42,7 +42,7 @@
 //                    RName1 ( 1-characters amino acid names         )
 //
 //
-//  (C) E. Krissinel  2000-2013
+//  (C) E. Krissinel  2000-2015
 //
 //  =================================================================
 //
@@ -118,8 +118,9 @@ namespace mmdb  {
   extern int  isDNARNA     ( cpstr resName ); // 0,1(DNA),2(RNA)
   extern bool isSugar      ( cpstr resName );
 
-  extern void  Get1LetterCode ( cpstr res3name, pstr res1code );
-  extern void  Get3LetterCode ( cpstr res1name, pstr res3code );
+  extern void  Get1LetterCode ( cpstr res3name, pstr   res1code );
+  extern void  Get1LetterCode ( cpstr res3name, char & res1code );
+  extern void  Get3LetterCode ( cpstr res1name, pstr   res3code );
 
 }  // namespace mmdb
 

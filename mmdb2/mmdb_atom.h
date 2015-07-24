@@ -316,8 +316,8 @@ namespace mmdb  {
       PResidue GetResidue  ();
       PChain   GetChain    ();
       PModel   GetModel    ();
-      int       GetResidueNo();
-      void *    GetCoordHierarchy();  // PRoot
+      int      GetResidueNo();
+      void *   GetCoordHierarchy();  // PRoot
 
       //  GetAtomID(..) generates atom ID in the form
       //     /m/c/r(rn).i/n[e]:a

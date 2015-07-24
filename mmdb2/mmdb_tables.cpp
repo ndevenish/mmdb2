@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    24.07.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -42,7 +42,7 @@
 //                    RName1 ( 1-characters amino acid names         )
 //
 //
-//  (C) E. Krissinel  2000-2013
+//  (C) E. Krissinel  2000-2015
 //
 //  =================================================================
 //
@@ -724,6 +724,34 @@ namespace mmdb  {
     if (res1code[0]!=char(1))  res1code[1] = char(0);
     else if (isNucleotide(r))  strcpy ( res1code,r   );
                          else  strcpy ( res1code,"X" );
+
+  }
+
+  void Get1LetterCode ( cpstr res3name, char & res1code )  {
+  char r[4];
+  int  i;
+
+    strncpy ( r,res3name,3 );
+    r[3] = char(0);
+    UpperCase ( r );
+    i = 0;
+    res1code = char(1);
+    while (Res1Code[i][0])  {
+      if (Res1Code[i][0]==r[0])  {
+        if (Res1Code[i][1]==r[1])  {
+          if (Res1Code[i][2]==r[2])  {
+            res1code = Res1Code[i][4];
+            break;
+          }
+        }
+      }
+      i++;
+    }
+
+    if (res1code==char(1))  {
+      if (isNucleotide(r))  res1code = r[0];
+                      else  res1code = 'X';
+    }
 
   }
 
