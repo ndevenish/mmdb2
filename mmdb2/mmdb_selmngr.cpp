@@ -3372,13 +3372,15 @@ namespace mmdb  {
     f.WriteByte ( &Version );
 
     CoorManager::write ( f );
-
-    f.WriteInt ( &nSelections );
-    for (i=0;i<nSelections;i++)  {
-      StreamWrite ( f,mask[i]       );
-      f.WriteInt  ( &(nSelItems[i]) );
-      sType = selType[i];
-      f.WriteInt  ( &(sType) );
+    
+    if (!isCompactBinary())  {
+      f.WriteInt ( &nSelections );
+      for (i=0;i<nSelections;i++)  {
+        StreamWrite ( f,mask[i]       );
+        f.WriteInt  ( &(nSelItems[i]) );
+        sType = selType[i];
+        f.WriteInt  ( &(sType) );
+      }
     }
 
   }
@@ -3393,22 +3395,24 @@ namespace mmdb  {
 
     CoorManager::read ( f );
 
-    f.ReadInt ( &nSelections );
-    if (nSelections>0)  {
-      mask      = new PMask [nSelections];
-      selection = new PPMask[nSelections];
-      nSelItems = new int    [nSelections];
-      selType   = new SELECTION_TYPE[nSelections];
-      for (i=0;i<nSelections;i++)  {
-        mask[i] = NULL;
-        StreamRead ( f,mask[i]       );
-        f.ReadInt  ( &(nSelItems[i]) );
-        f.ReadInt  ( &(sType)        );
-        selType  [i] = (SELECTION_TYPE)sType;
-        selection[i] = NULL;
-        if (mask[i])
-             MakeSelIndex ( i+1,selType[i],-1 );
-        else nSelItems[i] = 0;
+    if (!isCompactBinary())  {
+      f.ReadInt ( &nSelections );
+      if (nSelections>0)  {
+        mask      = new PMask [nSelections];
+        selection = new PPMask[nSelections];
+        nSelItems = new int    [nSelections];
+        selType   = new SELECTION_TYPE[nSelections];
+        for (i=0;i<nSelections;i++)  {
+          mask[i] = NULL;
+          StreamRead ( f,mask[i]       );
+          f.ReadInt  ( &(nSelItems[i]) );
+          f.ReadInt  ( &(sType)        );
+          selType  [i] = (SELECTION_TYPE)sType;
+          selection[i] = NULL;
+          if (mask[i])
+               MakeSelIndex ( i+1,selType[i],-1 );
+          else nSelItems[i] = 0;
+        }
       }
     }
 

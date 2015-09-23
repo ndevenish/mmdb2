@@ -134,7 +134,7 @@ namespace mmdb  {
 
        SelManager ();
        SelManager ( io::RPStream Object );
-      ~ SelManager();
+       ~SelManager();
 
 
       // ====================  Selecting atoms  =======================

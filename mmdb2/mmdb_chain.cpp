@@ -50,7 +50,7 @@
 
 #include "mmdb_chain.h"
 #include "mmdb_model.h"
-#include "mmdb_root.h"
+#include "mmdb_manager.h"
 #include "mmdb_cifdefs.h"
 
 namespace mmdb  {
@@ -2440,24 +2440,34 @@ namespace mmdb  {
 
   void  Chain::write ( io::RFile f )  {
   int  i;
-  byte Version=1;
+  byte Version=2;
+  bool compactBinary = false;
+  
+    PManager M = GetCoordHierarchy();
+    if (M)
+      compactBinary = M->isCompactBinary();
 
-    f.WriteByte ( &Version );
-
-    UDData::write ( f );
-
-    f.WriteTerLine ( chainID    ,false );
-    f.WriteTerLine ( prevChainID,false );
-
-    DBRef .write ( f );  //  Database reference
-    seqAdv.write ( f );  //  SEQADV records
-    seqRes.write ( f );  //  SEQRES data
-    modRes.write ( f );  //  MODRES records
-    Het   .write ( f );  //  HET    records
-
+    f.WriteByte ( &Version       );
+    f.WriteBool ( &compactBinary );
+    f.WriteTerLine ( chainID,false );
+    
     f.WriteInt ( &nResidues );
     for (i=0;i<nResidues;i++)
       residue[i]->write ( f );
+
+    if (!compactBinary)  {
+
+      UDData::write ( f );
+  
+      f.WriteTerLine ( prevChainID,false );
+  
+      DBRef .write ( f );  //  Database reference
+      seqAdv.write ( f );  //  SEQADV records
+      seqRes.write ( f );  //  SEQRES data
+      modRes.write ( f );  //  MODRES records
+      Het   .write ( f );  //  HET    records
+      
+    }
 
   }
 
@@ -2466,24 +2476,16 @@ namespace mmdb  {
   // prior to calling this function!
   int  i;
   byte Version;
+  bool compactBinary;
 
     FreeMemory();
 
-    f.ReadByte ( &Version );
-
-    UDData::read ( f );
-
-    f.ReadTerLine ( chainID    ,false );
-    f.ReadTerLine ( prevChainID,false );
-
-    DBRef .read ( f );   //  Database reference
-    seqAdv.read ( f );   //  SEQADV records
-    seqRes.read ( f );   //  SEQRES data
-    modRes.read ( f );   //  MODRES records
-    Het   .read ( f );   //  HET    records
-
+    f.ReadByte ( &Version       );
+    f.ReadBool ( &compactBinary );
+    f.ReadTerLine ( chainID,false );
+    
     SetChain ( chainID );
-
+    
     f.ReadInt ( &nResidues );
     resLen = nResidues;
     if (nResidues>0)  {
@@ -2493,6 +2495,20 @@ namespace mmdb  {
         residue[i]->SetChain ( this );
         residue[i]->read ( f );
       }
+    }
+
+    if (!compactBinary)  {
+
+      UDData::read ( f );
+
+      f.ReadTerLine ( prevChainID,false );
+  
+      DBRef .read ( f );   //  Database reference
+      seqAdv.read ( f );   //  SEQADV records
+      seqRes.read ( f );   //  SEQRES data
+      modRes.read ( f );   //  MODRES records
+      Het   .read ( f );   //  HET    records
+      
     }
 
   }

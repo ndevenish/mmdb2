@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    14.07.13   <--  Date of Last Modification.
+//    07.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //  **** Classes :  mmdb::Brick       ( space brick                  )
 //       ~~~~~~~~~  mmdb::CoorManager ( MMDB atom coordinate manager )
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -2463,20 +2463,29 @@ namespace mmdb  {
   }
 
   void  CoorManager::GetBrickCoor ( PAtom A,
-                                         int & nx, int & ny, int & nz ) {
+                                    int & nx, int & ny, int & nz ) {
     nx = (int)floor((A->x-xbrick_0)/brick_size);
     ny = (int)floor((A->y-ybrick_0)/brick_size);
     nz = (int)floor((A->z-zbrick_0)/brick_size);
     if ((ny<0) || (nz<0) || (nx>=nbrick_x) ||
         (ny>=nbrick_y) || (nz>=nbrick_z))  nx = -1;
   }
-
+  
   void  CoorManager::GetBrickCoor ( realtype x, realtype y,
                                     realtype z, int & nx,
-                                         int & ny, int & nz ) {
+                                    int & ny, int & nz ) {
     nx = (int)floor((x-xbrick_0)/brick_size);
     ny = (int)floor((y-ybrick_0)/brick_size);
     nz = (int)floor((z-zbrick_0)/brick_size);
+    if ((ny<0) || (nz<0) || (nx>=nbrick_x) ||
+        (ny>=nbrick_y) || (nz>=nbrick_z))  nx = -1;
+  }
+  
+  void  CoorManager::GetBrickCoor ( vect3 & xyz,
+                                    int & nx, int & ny, int & nz ) {
+    nx = (int)floor((xyz[0]-xbrick_0)/brick_size);
+    ny = (int)floor((xyz[1]-ybrick_0)/brick_size);
+    nz = (int)floor((xyz[2]-zbrick_0)/brick_size);
     if ((ny<0) || (nz<0) || (nx>=nbrick_x) ||
         (ny>=nbrick_y) || (nz>=nbrick_z))  nx = -1;
   }
@@ -2504,16 +2513,17 @@ namespace mmdb  {
     return NULL;
   }
 
-  void  CoorManager::MakeBricks ( PPAtom  atmvec,  int avlen,
-                                       realtype Margin,
-                                       realtype BrickSize )  {
+  void  CoorManager::MakeBricks ( PPAtom  atmvec,
+                                  int      avlen,
+                                  realtype Margin,
+                                  realtype BrickSize )  {
   //    Makes bricking for atoms contained in vector atmvec of length
   // avlen, with brick size BrickSize (in angstroms). The previous
   // bricking, if there was any, is removed.
   int      i,j, nx,ny,nz, alen;
   realtype x1,x2, y1,y2, z1,z2, dx,dy,dz;
-  PPAtom  A;
-
+  PPAtom   A;
+  
     RemoveBricks();
 
     brick_size = BrickSize;
@@ -3895,20 +3905,84 @@ namespace mmdb  {
 
   }
 
+  
+  void  CoorManager::SeekContacts ( vect3  * xyz,
+                                    int      nxyz,
+                                    realtype contDist,
+                                    PContact contact,
+                                    int &    ncontacts
+                                   )  {
+  //  Simplified optimized for speed and convenience version:
+  //    - bricking is pre-done
+  //    - contacting set of atoms is given as a bare vect3 (xyz)
+  //      coordinate vector
+  //    - no checks for identity atoms
+  //    - contact must be pre-allocated with at least ilen1*ilen2
+  //      elements
+  //    - contact returns square distances
+  //    - ncontacts is always reset
+  realtype contDist2, dx,dy,dz, d2;
+  int      i,j, nx,ny,nz, dn;
+  int      ix1,ix2, iy1,iy2, iz1,iz2, ix,iy,iz;
+  PBrick   B;
 
-  void  CoorManager::SeekContacts ( PPAtom     AIndex1,
-                                         int         ilen1,
-                                         PPAtom *   AIndex2,
-                                         ivector     ilen2,
-                                         int         nStructures,
-                                         realtype    dist1,
-                                         realtype    dist2,
-                                         PPMContact & contact,
-                                         int         bricking
-                                       )  {
+    contDist2 = contDist*contDist;
+
+    ncontacts = 0;
+
+    if (!brick)  return;
+    
+    dn = (int)floor(contDist/brick_size)+1;
+
+    for (i=0;i<nxyz;i++)  {
+      // Find brick location
+      GetBrickCoor ( xyz[i],nx,ny,nz );
+      if (nx>=0)  {
+        ix1 = IMax ( 0,nx-dn );
+        iy1 = IMax ( 0,ny-dn );
+        iz1 = IMax ( 0,nz-dn );
+        ix2 = IMin ( nbrick_x,nx+dn+1 );
+        iy2 = IMin ( nbrick_y,ny+dn+1 );
+        iz2 = IMin ( nbrick_z,nz+dn+1 );
+        for (ix=ix1;ix<ix2;ix++)
+          if (brick[ix])
+            for (iy=iy1;iy<iy2;iy++)
+              if (brick[ix][iy])
+                for (iz=iz1;iz<iz2;iz++)  {
+                  B = brick[ix][iy][iz];
+                  if (B)
+                    for (j=0;j<B->nAtoms;j++)  {
+                      dx = xyz[i][0] - B->atom[j]->x;
+                      dy = xyz[i][1] - B->atom[j]->y;
+                      dz = xyz[i][2] - B->atom[j]->z;
+                      d2 = dx*dx + dy*dy + dz*dz;
+                      if (d2<=contDist2)  {
+                        contact[ncontacts].id1  = B->id[j];
+                        contact[ncontacts].id2  = i;
+                        contact[ncontacts].dist = d2;
+                        ncontacts++;
+                      }
+                  }
+                }
+      }    
+    }
+
+  }
+  
+
+  void  CoorManager::SeekContacts ( PPAtom       AIndex1,
+                                    int          ilen1,
+                                    PPAtom *     AIndex2,
+                                    ivector      ilen2,
+                                    int          nStructures,
+                                    realtype     dist1,
+                                    realtype     dist2,
+                                    PPMContact & contact,
+                                    int          bricking
+                                   )  {
   //  It is Ok to have NULL pointers in AIndex1 and AIndex2
-  PMBrick B;
-  PAtom   A;
+  PMBrick  B;
+  PAtom    A;
   realtype d12,d22,d2;
   int      dn, i,j,k, nx,ny,nz, ix1,iy1,iz1, ix2,iy2,iz2;
   int      ix,iy,iz;
@@ -4051,33 +4125,36 @@ namespace mmdb  {
   byte Version=1;
     f.WriteByte ( &Version    );
     Root::write ( f );
-    f.WriteInt  ( &CoorIDCode );
-    f.WriteReal ( &brick_size );
-    f.WriteReal ( &xbrick_0   );
-    f.WriteReal ( &ybrick_0   );
-    f.WriteReal ( &zbrick_0   );
-    f.WriteInt  ( &nbrick_x   );
-    f.WriteInt  ( &nbrick_y   );
-    f.WriteInt  ( &nbrick_z   );
+    if (!isCompactBinary())  {
+      f.WriteInt  ( &CoorIDCode );
+      f.WriteReal ( &brick_size );
+      f.WriteReal ( &xbrick_0   );
+      f.WriteReal ( &ybrick_0   );
+      f.WriteReal ( &zbrick_0   );
+      f.WriteInt  ( &nbrick_x   );
+      f.WriteInt  ( &nbrick_y   );
+      f.WriteInt  ( &nbrick_z   );
+    }
   }
 
   void  CoorManager::read ( io::RFile f )  {
   byte Version;
     f.ReadByte ( &Version    );
     Root::read ( f );
-    f.ReadInt  ( &CoorIDCode );
-    f.ReadReal ( &brick_size );
-    f.ReadReal ( &xbrick_0   );
-    f.ReadReal ( &ybrick_0   );
-    f.ReadReal ( &zbrick_0   );
-    f.ReadInt  ( &nbrick_x   );
-    f.ReadInt  ( &nbrick_y   );
-    f.ReadInt  ( &nbrick_z   );
+    if (!isCompactBinary())  {
+      f.ReadInt  ( &CoorIDCode );
+      f.ReadReal ( &brick_size );
+      f.ReadReal ( &xbrick_0   );
+      f.ReadReal ( &ybrick_0   );
+      f.ReadReal ( &zbrick_0   );
+      f.ReadInt  ( &nbrick_x   );
+      f.ReadInt  ( &nbrick_y   );
+      f.ReadInt  ( &nbrick_z   );
+    }
   }
 
 
   MakeStreamFunctions(CoorManager);
-
 
 
 

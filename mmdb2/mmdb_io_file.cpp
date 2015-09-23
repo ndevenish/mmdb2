@@ -976,7 +976,7 @@ namespace mmdb  {
            else  ll = 0;
       if (!longLine)  {
         sl = byte(ll);
-        B = WriteFile ( &sl,sizeof(sl) );
+        B  = WriteFile ( &sl,sizeof(sl) );
       } else if (UniBin)  {
         word2UniBin ( ll,wUB );
         B = WriteFile ( wUB,sizeof(wordUniBin) );

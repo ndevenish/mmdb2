@@ -1489,7 +1489,12 @@ namespace mmdb  {
     }
   }
 
+  bool Root::isCompactBinary()  {
+    if (Flags & MMDBF_MakeCompactBinary)  return true;
+    return false;
+  }
 
+  
   int  Root::CrystReady()  {
   //    Returns flags:
   // CRRDY_Complete       if crystallographic information is complete
@@ -2413,6 +2418,7 @@ namespace mmdb  {
           else  return Error_NoLogicalName;
   }
 
+  /*
   ERROR_CODE Root::WriteMMDBF ( cpstr MMDBRootName, io::GZ_MODE gzipMode )  {
   io::File f;
   char     Label[100];
@@ -2432,7 +2438,30 @@ namespace mmdb  {
     return Error_NoError;
 
   }
+*/
 
+  ERROR_CODE Root::WriteMMDBF ( cpstr       MMDBRootName,
+                                io::GZ_MODE gzipMode )  {
+  io::File f;
+    f.assign ( MMDBRootName,false,true,gzipMode );
+    if (f.rewrite())  {
+      WriteMMDBF ( f );
+      f.shut();
+    } else
+      return Error_CantOpenFile;
+    return Error_NoError;
+  }
+  
+  void Root::WriteMMDBF ( io::RFile f )  {
+  char  Label[100];
+  byte  Version=Edition;
+    FType = MMDB_FILE_Binary;
+    strcpy ( Label,MMDBFLabel );
+    f.WriteFile ( Label,sizeof(MMDBFLabel) );
+    f.WriteByte ( &Version );
+    write ( f );
+  }
+  
 
   pstr  Root::GetEntryID()  {
     return title.idCode;
@@ -2811,28 +2840,22 @@ namespace mmdb  {
     return title.GetStructureTitle ( L );
   }
 
-  void  Root::SetShortBinary()  {
+  void  Root::SetCompactBinary()  {
   // leaves only coordinates in binary files
   int i;
+    SetFlag ( MMDBF_MakeCompactBinary );
     for (i=0;i<nAtoms;i++)
-      if (atom[i])  atom[i]->SetShortBinary();
+      if (atom[i])  atom[i]->SetCompactBinary();
   }
 
 
   void  Root::write ( io::RFile f )  {
   int  i,k;
-  byte Version=1;
+  byte Version=2;
 
     f.WriteByte ( &Version );
-
-    UDData::write ( f );
-
-    title     .write ( f );
-    cryst     .write ( f );
-    udRegister.write ( f );
-    DefPath   .write ( f );
-
-    f.WriteWord ( &Flags  );
+    f.WriteWord ( &Flags   );
+    
     f.WriteInt  ( &nAtoms );
     for (i=0;i<nAtoms;i++)  {
       if (atom[i])  k = 1;
@@ -2848,13 +2871,31 @@ namespace mmdb  {
       f.WriteInt ( &k );
       if (model[i]) model[i]->write ( f );
     }
+    
+    if (Flags & MMDBF_MakeCompactBinary)  {
+      
+      f.WriteTerLine ( title.idCode,false      );
+      f.WriteReal    ( &title.resolution );
+      title.title.write ( f );
+      cryst      .write ( f );
+      
+    } else  {
 
-    SA      .write ( f );
-    Footnote.write ( f );
-    SB      .write ( f );
-    SC      .write ( f );
-
-    StreamWrite ( f,CIF );
+      UDData::write ( f );
+  
+      title     .write ( f );
+      cryst     .write ( f );
+      udRegister.write ( f );
+      DefPath   .write ( f );
+  
+      SA      .write ( f );
+      Footnote.write ( f );
+      SB      .write ( f );
+      SC      .write ( f );
+  
+      StreamWrite ( f,CIF );
+    
+    }
 
   }
 
@@ -2866,17 +2907,10 @@ namespace mmdb  {
     FreeFileMemory();
 
     f.ReadByte ( &Version );
-
-    UDData::read ( f );
-
-    title     .read ( f );
-    cryst     .read ( f );
-    udRegister.read ( f );
-    DefPath   .read ( f );
-
+    f.ReadWord ( &Flags   );
+    
     //   It is important to read atoms before models,
     // residues and chains!
-    f.ReadWord ( &Flags  );
     f.ReadInt  ( &nAtoms );
     atmLen = nAtoms;
     if (nAtoms>0)  {
@@ -2907,13 +2941,30 @@ namespace mmdb  {
           model[i] = NULL;
       }
     }
-
-    SA      .read ( f );
-    Footnote.read ( f );
-    SB      .read ( f );
-    SC      .read ( f );
-
-    StreamRead ( f,CIF );
+    if (Flags & MMDBF_MakeCompactBinary)  {
+      
+      f.ReadTerLine ( title.idCode,false      );
+      f.ReadReal    ( &title.resolution );
+      title.title.read ( f );
+      cryst      .read ( f );
+      
+    } else  {
+  
+      UDData::read ( f );
+  
+      title     .read ( f );
+      cryst     .read ( f );
+      udRegister.read ( f );
+      DefPath   .read ( f );
+  
+      SA      .read ( f );
+      Footnote.read ( f );
+      SB      .read ( f );
+      SC      .read ( f );
+  
+      StreamRead ( f,CIF );
+      
+    }
 
   }
 

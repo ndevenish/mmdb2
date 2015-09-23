@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    14.07.13   <--  Date of Last Modification.
+//    07.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //  **** Classes :  mmdb::Brick       ( space brick                  )
 //       ~~~~~~~~~  mmdb::CoorManager ( MMDB atom coordinate manager )
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -230,7 +230,7 @@ namespace mmdb  {
       //  ----------------  Bricking  ------------------------------
 
       void  RemoveBricks ();
-      bool  areBricks  () { return (brick!=NULL); }
+      bool  areBricks    () { return (brick!=NULL); }
       void  MakeBricks   ( PPAtom atmvec, int avlen,
                            realtype Margin, realtype BrickSize=6.0 );
       void  GetBrickDimension (
@@ -238,10 +238,11 @@ namespace mmdb  {
       void  GetBrickCoor ( PAtom A, int & nx, int & ny, int & nz );
       void  GetBrickCoor ( realtype x, realtype y, realtype z,
                            int & nx, int & ny, int & nz );
-      PBrick GetBrick   ( int   nx, int   ny, int   nz );
+      void  GetBrickCoor ( vect3 & xyz, int & nx, int & ny, int & nz );
+      PBrick GetBrick    ( int   nx, int   ny, int   nz );
 
       void  RemoveMBricks ();
-      bool  areMBricks  () { return (mbrick!=NULL); }
+      bool  areMBricks    ()  { return (mbrick!=NULL); }
       void  MakeMBricks   ( PPAtom * atmvec, ivector avlen,
                             int nStructures, realtype Margin,
                             realtype BrickSize=6.0 );
@@ -593,7 +594,7 @@ namespace mmdb  {
       // ====================  Seeking contacts  ======================
 
       void  SeekContacts (
-               PPAtom    AIndex,    // index of atoms [0..ilen-1]
+               PPAtom     AIndex,    // index of atoms [0..ilen-1]
                int        ilen,      // length of index
                int        atomNum,   // number of 1st contact atom
                                      // in the index. All other atoms
@@ -616,7 +617,7 @@ namespace mmdb  {
                                      // [-(seqDist-1)..seqDist-1], the
                                      // section of neglection is
                                      // shortened to that gap.
-               RPContact contact,   // indices of contacting atoms
+               RPContact  contact,   // indices of contacting atoms
                                      // [0..ncontacts-1]. contact[i].id1
                                      // is set to atomNum and
                                      // contact[i].id2 is set to the
@@ -648,8 +649,8 @@ namespace mmdb  {
                          );
 
       void  SeekContacts (
-               PAtom     A,         // 1st atom in contact
-               PPAtom    AIndex,    // index of atoms [0..ilen-1] to
+               PAtom      A,         // 1st atom in contact
+               PPAtom     AIndex,    // index of atoms [0..ilen-1] to
                                      // check for contact with 1st atom
                int        ilen,      // length of index
                realtype   dist1,     // minimal contact distance
@@ -668,7 +669,7 @@ namespace mmdb  {
                                      // [-(seqDist-1)..seqDist-1], the
                                      // section of neglection is
                                      // shortened to that gap.
-               RPContact contact,   // indices of contacting atoms
+               RPContact  contact,   // indices of contacting atoms
                                      // [0..ncontacts-1]. contact[i].id1
                                      // is set to -1, and contact[i].id2
                                      // is set to the index of 2nd
@@ -698,9 +699,9 @@ namespace mmdb  {
                          );
 
       void  SeekContacts (
-               PPAtom    AIndex1,   //  1st atom index [0..ilen1-1]
+               PPAtom     AIndex1,   //  1st atom index [0..ilen1-1]
                int        ilen1,     //  length of 1st index
-               PPAtom    AIndex2,   //  2nd atom index [0..ilen2-1] to
+               PPAtom     AIndex2,   //  2nd atom index [0..ilen2-1] to
                                      // check for contact with 1st index
                int        ilen2,     //  length of 2nd index
                realtype   dist1,     //  minimal contact distance
@@ -720,7 +721,7 @@ namespace mmdb  {
                                      // [-(seqDist-1)..seqDist-1], the
                                      // section of neglection is
                                      // shortened to that gap.
-               RPContact contact,   //  indices of contacting atoms
+               RPContact  contact,   //  indices of contacting atoms
                                      // [0..ncontacts-1]. contact[i].id1
                                      // contains number of atom from 1st
                                      // index, and contact[i].id2
@@ -766,13 +767,13 @@ namespace mmdb  {
       //    - contact returns square distances
       //    - ncontacts is always reset
       void  SeekContacts (
-               PPAtom    AIndex1,   //  1st atom index [0..ilen1-1]
+               PPAtom     AIndex1,   //  1st atom index [0..ilen1-1]
                int        ilen1,     //  length of 1st index
-               PPAtom    AIndex2,   //  2nd atom index [0..ilen2-1] to
+               PPAtom     AIndex2,   //  2nd atom index [0..ilen2-1] to
                                      // check for contact with 1st index
                int        ilen2,     //  length of 2nd index
                realtype   contDist,  //  maximal contact distance
-               PContact  contact,   //  indices of contacting atoms
+               PContact   contact,   //  indices of contacting atoms
                                      // [0..ncontacts-1]. contact[i].id1
                                      // contains number of atom from 1st
                                      // index, and contact[i].id2
@@ -780,15 +781,40 @@ namespace mmdb  {
                                      // index, contacting with the former
                                      // one. Must be pre-allocated
                int &      ncontacts, //  number of contacts found
-               int       bricking=0  //  bricking control; may be a
+               int        bricking=0 //  bricking control; may be a
                                      // combination of BRICK_ON_1 or
                                      // BRICK_ON_2 with BRICK_READY
                          );
-
+      
+      //  Simplified optimized for speed and convenience version:
+      //    - bricking is pre-done
+      //    - contacting set of atoms is given as a bare vect3 (xyz)
+      //      coordinate vector
+      //    - no checks for identity atoms
+      //    - contact must be pre-allocated with at least ilen1*ilen2
+      //      elements
+      //    - contact returns square distances
+      //    - ncontacts is always reset
       void  SeekContacts (
-             PPAtom       AIndex1,  //  1st atom index [0..ilen1-1]
+               vect3    * xyz,       //  2nd atom index [0..ilen2-1] to
+                                     // check for contact with 1st index
+                                     // which was used for bricking 
+               int        nxyz,      //  length of 2nd index
+               realtype   contDist,  //  maximal contact distance
+               PContact   contact,   //  indices of contacting atoms
+                                     // [0..ncontacts-1]. contact[i].id1
+                                     // contains number of atom from 1st
+                                     // index, and contact[i].id2
+                                     // contains number of atom from 2nd
+                                     // index, contacting with the former
+                                     // one. Must be pre-allocated
+               int &      ncontacts  //  number of contacts found
+                         );
+      
+      void  SeekContacts (
+             PPAtom        AIndex1,  //  1st atom index [0..ilen1-1]
              int           ilen1,    //  length of 1st index
-             PPAtom *     AIndex2,  //  indexes of atoms to be checked
+             PPAtom *      AIndex2,  //  indexes of atoms to be checked
                                      // for contact with each atom from
                                      // Aindex1; dimension
                                      // [0..nStructures-1][0..ilen2[i]-1]
@@ -796,7 +822,7 @@ namespace mmdb  {
              int           nStructures, //  number of indexes AIndex2
              realtype      dist1,    //  minimal contact distance
              realtype      dist2,    //  maximal contact distance
-             PPMContact & contact,  // resulting contacts, one structure
+             PPMContact &  contact,  // resulting contacts, one structure
                                      // per each position in AIndex1. If
                                      // AIndex1[i] is NULL, contact[i] is
                                      // also NULL. "contact" is always
@@ -804,7 +830,7 @@ namespace mmdb  {
                                      // re-allocation is attempted.
              int            bricking=0  //  bricking control; may be
                                      // BRICK_READY if AIndex2 does not
-                                    // change
+                                     // change
                          );
 
     protected :

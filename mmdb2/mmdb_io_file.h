@@ -133,6 +133,7 @@ namespace mmdb  {
         word  ReadFile     ( void * Buffer, word Count );
         word  CreateRead   ( pstr & Line );
         word  ReadTerLine  ( pstr  Line, bool longLine=false );
+        word  ReadShortLine ( pstr  Line, bool longLine=false );
         bool  WriteFile    ( const void * Buffer, word Count );
         bool  CreateWrite  ( cpstr Line );
         bool  WriteTerLine ( cpstr Line, bool longLine=false );

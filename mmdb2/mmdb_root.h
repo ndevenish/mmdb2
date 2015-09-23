@@ -73,7 +73,8 @@ namespace mmdb  {
     MMDBF_FixSpaceGroup          = 0x00008000,
     MMDBF_EnforceAtomNames       = 0x00010000,
     MMDBF_EnforceUniqueChainID   = 0x00020000,
-    MMDBF_DoNotProcessSpaceGroup = 0x00040000
+    MMDBF_DoNotProcessSpaceGroup = 0x00040000,
+    MMDBF_MakeCompactBinary      = 0x00080000
   };
 
   // MMDBF_EnforceUniqueChainID   will make MMDB to rename chains on
@@ -199,6 +200,7 @@ namespace mmdb  {
                                   io::GZ_MODE gzipMode=io::GZM_CHECK );
       ERROR_CODE WriteMMDBF1    ( cpstr MMDBLFName,
                                   io::GZ_MODE gzipMode=io::GZM_CHECK );
+      void       WriteMMDBF     ( io::RFile f );
 
       void  GetInputBuffer ( pstr Line, int & count );
 
@@ -330,6 +332,8 @@ namespace mmdb  {
       bool GetNewChainID ( int modelNo, ChainID chID, int length=1 );
 
       //  ---------------  Enquiring -------------------------------
+      
+      bool isCompactBinary();
 
       int   CrystReady();
       //    Returns flags:
@@ -498,7 +502,7 @@ namespace mmdb  {
 
       void  Copy ( PRoot MMDBRoot );
 
-      void  SetShortBinary();  // leaves only coordinates in binary files
+      void  SetCompactBinary();  // leaves only coordinates in binary files
 
       // -------  user-defined data handlers
       int   PutUDData ( int UDDhandle, int      iudd );

@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    10.05.15   <--  Date of Last Modification.
+//    11.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -5069,6 +5069,7 @@ namespace mmdb  {
     ncontacts = 0;
     manager->SeekContacts ( Ca,nres, Ca,nres, 2.0,10.0, 2,
                             contact,ncontacts,0 );
+    manager->RemoveBricks();
     if (ncontacts<=0)  {
       delete[] Res;
       delete[] Ca;
@@ -5289,12 +5290,16 @@ namespace mmdb  {
 
   void  Model::write ( io::RFile f )  {
   int  i,k;
-  byte Version=3;
+  byte Version=4;
+  bool compactBinary = false;
+  
+    PManager M = GetCoordHierarchy();
+    if (M)
+      compactBinary = M->isCompactBinary();
 
-    f.WriteByte ( &Version );
-
-    ProModel::write ( f );
-
+    f.WriteByte ( &Version       );
+    f.WriteBool ( &compactBinary );
+    
     f.WriteInt ( &serNum  );
     f.WriteInt ( &nChains );
 
@@ -5305,25 +5310,31 @@ namespace mmdb  {
       if (chain[i]) chain[i]->write ( f );
     }
 
-    hetCompounds.write ( f );
-    helices     .write ( f );
-    sheets      .write ( f );
-    turns       .write ( f );
-    links       .write ( f );
-    linkRs      .write ( f );
+    if (!compactBinary)  {
+
+      ProModel::write ( f );
+  
+      hetCompounds.write ( f );
+      helices     .write ( f );
+      sheets      .write ( f );
+      turns       .write ( f );
+      links       .write ( f );
+      linkRs      .write ( f );
+      
+    }
 
   }
 
   void  Model::read ( io::RFile f )  {
   int  i,k;
   byte Version;
+  bool compactBinary;
 
     FreeMemory();
 
-    f.ReadByte ( &Version );
-
-    ProModel::read ( f );
-
+    f.ReadByte ( &Version       );
+    f.ReadBool ( &compactBinary );
+    
     f.ReadInt ( &serNum  );
     f.ReadInt ( &nChains );
     nChainsAlloc = nChains;
@@ -5339,12 +5350,18 @@ namespace mmdb  {
       }
     }
 
-    hetCompounds.read ( f );
-    helices     .read ( f );
-    sheets      .read ( f );
-    turns       .read ( f );
-    if (Version>1)  links .read ( f );
-    if (Version>2)  linkRs.read ( f );
+    if (!compactBinary)  {
+      
+      ProModel::read ( f );
+  
+      hetCompounds.read ( f );
+      helices     .read ( f );
+      sheets      .read ( f );
+      turns       .read ( f );
+      links       .read ( f );
+      linkRs      .read ( f );
+      
+    }
 
   }
 

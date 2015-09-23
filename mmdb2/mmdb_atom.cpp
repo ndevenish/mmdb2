@@ -4,7 +4,7 @@
 //   CCP4 Coordinate Library: support of coordinate-related
 //   functionality in protein crystallography applications.
 //
-//   Copyright (C) Eugene Krissinel 2000-2013.
+//   Copyright (C) Eugene Krissinel 2000-2015.
 //
 //    This library is free software: you can redistribute it and/or
 //    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    18.10.13   <--  Date of Last Modification.
+//    07.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -35,7 +35,7 @@
 //  **** Functions: mmdb::BondAngle
 //       ~~~~~~~~~~
 //
-//  Copyright (C) E. Krissinel 2000-2013
+//  Copyright (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -56,9 +56,9 @@ namespace mmdb  {
 
   //  ================================================================
 
-  #define  ASET_ShortBinary   0x10000000
-  #define  ASET_ShortTer      0x20000000
-  #define  ASET_ShortHet      0x40000000
+  #define  ASET_CompactBinary  0x10000000
+  #define  ASET_ShortTer       0x20000000
+  #define  ASET_ShortHet       0x40000000
 
   bool  ignoreSegID            = false;
   bool  ignoreElement          = false;
@@ -1218,12 +1218,20 @@ namespace mmdb  {
     dz = r[2][0]*a->x + r[2][1]*a->y + r[2][2]*a->z + t[2] - z;
     return  dx*dx + dy*dy + dz*dz;
   }
-
+  
   realtype Atom::GetDist2 ( realtype ax, realtype ay, realtype az )  {
   realtype dx,dy,dz;
     dx = ax - x;
     dy = ay - y;
     dz = az - z;
+    return  dx*dx + dy*dy + dz*dz;
+  }
+  
+  realtype Atom::GetDist2 ( vect3 & xyz )  {
+  realtype dx,dy,dz;
+    dx = xyz[0] - x;
+    dy = xyz[1] - y;
+    dz = xyz[2] - z;
     return  dx*dx + dy*dy + dz*dz;
   }
 
@@ -1784,14 +1792,20 @@ namespace mmdb  {
     y = y1;
     z = z1;
   }
-
+  
   void  Atom::TransformCopy ( mat44    & tm,
-                               realtype & xx,
-                               realtype & yy,
-                               realtype & zz )  {
+                              realtype & xx,
+                              realtype & yy,
+                              realtype & zz )  {
     xx = tm[0][0]*x + tm[0][1]*y + tm[0][2]*z + tm[0][3];
     yy = tm[1][0]*x + tm[1][1]*y + tm[1][2]*z + tm[1][3];
     zz = tm[2][0]*x + tm[2][1]*y + tm[2][2]*z + tm[2][3];
+  }
+  
+  void  Atom::TransformCopy ( mat44 & tm, vect3 & xyz )  {
+    xyz[0] = tm[0][0]*x + tm[0][1]*y + tm[0][2]*z + tm[0][3];
+    xyz[1] = tm[1][0]*x + tm[1][1]*y + tm[1][2]*z + tm[1][3];
+    xyz[2] = tm[2][0]*x + tm[2][1]*y + tm[2][2]*z + tm[2][3];
   }
 
   void  Atom::TransformSet ( mat44  & tm,
@@ -1942,8 +1956,8 @@ namespace mmdb  {
     return  CheckID ( aname,elname,aloc );
   }
 
-  void  Atom::SetShortBinary()  {
-    WhatIsSet |= ASET_ShortBinary;
+  void  Atom::SetCompactBinary()  {
+    WhatIsSet |= ASET_CompactBinary;
   }
 
   void  Atom::write ( io::RFile f )  {
@@ -1952,7 +1966,7 @@ namespace mmdb  {
   byte nb;
 
     f.WriteWord ( &WhatIsSet );
-    if (WhatIsSet & ASET_ShortBinary)  {
+    if (WhatIsSet & ASET_CompactBinary)  {
       if (Ter)  WhatIsSet |= ASET_ShortTer;
       if (Het)  WhatIsSet |= ASET_ShortHet;
       f.WriteInt     ( &index        );
@@ -1960,9 +1974,19 @@ namespace mmdb  {
       f.WriteTerLine ( altLoc ,false );
       f.WriteTerLine ( element,false );
       if (WhatIsSet & ASET_Coordinates)  {
+        f.WriteReal ( &x );
+        f.WriteReal ( &y );
+        f.WriteReal ( &z );
+        /*
+        k = mround(x*1000.0);  f.WriteInt ( &k );
+        k = mround(y*1000.0);  f.WriteInt ( &k );
+        k = mround(z*1000.0);  f.WriteInt ( &k );
+        */
+        /*
         f.WriteFloat ( &x );
         f.WriteFloat ( &y );
         f.WriteFloat ( &z );
+        */
       }
       return;
     }
@@ -2042,15 +2066,25 @@ namespace mmdb  {
     FreeMemory();
 
     f.ReadWord ( &WhatIsSet );
-    if (WhatIsSet & ASET_ShortBinary)  {
+    if (WhatIsSet & ASET_CompactBinary)  {
       f.ReadInt     ( &index        );
       f.ReadTerLine ( name   ,false );
       f.ReadTerLine ( altLoc ,false );
       f.ReadTerLine ( element,false );
       if (WhatIsSet & ASET_Coordinates)  {
+        f.ReadReal ( &x );
+        f.ReadReal( &y );
+        f.ReadReal ( &z );
+        /*
+        f.ReadInt ( &k );  x = realtype(k)/1000.0;
+        f.ReadInt ( &k );  y = realtype(k)/1000.0;
+        f.ReadInt ( &k );  z = realtype(k)/1000.0;
+        */
+        /*
         f.ReadFloat ( &x );
         f.ReadFloat ( &y );
         f.ReadFloat ( &z );
+        */
       }
       serNum     = index;
       Ter        = WhatIsSet & ASET_ShortTer;
@@ -3410,34 +3444,97 @@ namespace mmdb  {
   }
 
 
-  void  Residue::write ( io::RFile f )  {
+  void  Residue::write ( io::RFile f )  {  
   int  i;
-  byte Version=2;
+  bool shortBinary = false;
+  byte Version=3;
 
-    UDData::write ( f );
+    f.WriteByte ( &Version );
+  
+    if (nAtoms>0)  {
+      if (atom[0]->WhatIsSet & ASET_CompactBinary)
+        shortBinary = true;
+    }
 
-    f.WriteByte    ( &Version         );
-    f.WriteInt     ( &seqNum          );
-    f.WriteInt     ( &label_seq_id    );
-    f.WriteInt     ( &label_entity_id );
-    f.WriteInt     ( &index           );
-    f.WriteInt     ( &nAtoms          );
-    f.WriteByte    ( &SSE             );
-    f.WriteTerLine ( name         ,false );
-    f.WriteTerLine ( label_comp_id,false );
-    f.WriteTerLine ( label_asym_id,false );
-    f.WriteTerLine ( insCode      ,false );
+    f.WriteBool ( &shortBinary );
+
+    if (!shortBinary)  {
+      UDData::write ( f );
+      f.WriteInt     ( &label_seq_id       );
+      f.WriteInt     ( &label_entity_id    );
+      f.WriteTerLine ( label_comp_id,false );
+      f.WriteTerLine ( label_asym_id,false );
+    }
+
+    f.WriteInt     ( &seqNum );
+    f.WriteInt     ( &index  );
+    f.WriteInt     ( &nAtoms );
+    f.WriteByte    ( &SSE    );
+    f.WriteTerLine ( name   ,false );
+    f.WriteTerLine ( insCode,false );
     for (i=0;i<nAtoms;i++)
       f.WriteInt ( &(atom[i]->index) );
 
   }
-
+  
   void  Residue::read ( io::RFile f ) {
   //   IMPORTANT: array Atom in Root class should be
   // read prior calling this function!
   PPAtom A;
-  int     i,k;
-  byte    Version;
+  int    i,k;
+  byte   Version;
+  bool   shortBinary;
+
+    FreeMemory();
+
+    f.ReadByte ( &Version     );
+    f.ReadBool ( &shortBinary );
+    
+    if (!shortBinary)  {
+      UDData::read ( f );
+      f.ReadInt     ( &label_seq_id       );
+      f.ReadInt     ( &label_entity_id    );
+      f.ReadTerLine ( label_comp_id,false );
+      f.ReadTerLine ( label_asym_id,false );
+    }
+
+    f.ReadInt     ( &seqNum );
+    f.ReadInt     ( &index  );
+    f.ReadInt     ( &nAtoms );
+    f.ReadByte    ( &SSE    );
+    f.ReadTerLine ( name   ,false );
+    f.ReadTerLine ( insCode,false );
+    AtmLen = nAtoms;
+    A      = NULL;
+    if (chain) {
+      if (chain->model)
+        A = chain->model->GetAllAtoms();
+    }
+    if ((nAtoms>0) && (A))  {
+      atom = new PAtom[nAtoms];
+      for (i=0;i<nAtoms;i++)  {
+        f.ReadInt ( &k );
+        atom[i] = A[k-1];
+        atom[i]->SetResidue ( this );
+        atom[i]->_setBonds  ( A );
+      }
+    } else  {
+      for (i=0;i<nAtoms;i++)
+        f.ReadInt ( &k );
+      nAtoms = 0;
+      AtmLen = 0;
+    }
+    
+  }
+  
+
+ /* === old function, keep for a while
+  void  Residue::read ( io::RFile f ) {
+  //   IMPORTANT: array Atom in Root class should be
+  // read prior calling this function!
+  PPAtom A;
+  int    i,k;
+  byte   Version;
 
     FreeMemory ();
 
@@ -3479,7 +3576,7 @@ namespace mmdb  {
       AtmLen = 0;
     }
   }
-
+*/
 
   MakeFactoryFunctions(Residue)
 

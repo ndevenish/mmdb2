@@ -667,7 +667,7 @@ namespace mmdb  {
       TitleContainer source;      // source
       KeyWords       keyWords;    // key words
       TitleContainer expData;     // experimental data
-      TitleContainer mdlType;     // model desctiptions
+      TitleContainer mdlType;     // model descriptions
       TitleContainer author;      // author data
       TitleContainer revData;     // revision data
       TitleContainer supersede;   // supersede records

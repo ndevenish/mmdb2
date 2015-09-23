@@ -4,7 +4,7 @@
 //   CCP4 Coordinate Library: support of coordinate-related
 //   functionality in protein crystallography applications.
 //
-//   Copyright (C) Eugene Krissinel 2000-2013.
+//   Copyright (C) Eugene Krissinel 2000-2015.
 //
 //    This library is free software: you can redistribute it and/or
 //    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    07.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -35,7 +35,7 @@
 //  **** Functions: mmdb::BondAngle
 //       ~~~~~~~~~~
 //
-//  Copyright (C) E. Krissinel 2000-2013
+//  Copyright (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -308,6 +308,7 @@ namespace mmdb  {
       realtype GetDist2 ( PAtom a, mat44 & tm );  // tm applies to A
       realtype GetDist2 ( PAtom a, mat33 & r, vect3 & t );// tm applies to A
       realtype GetDist2 ( realtype ax, realtype ay, realtype az );
+      realtype GetDist2 ( vect3 & xyz );
 
       // GetCosine(a1,a2) calculates cosine of angle a1-this-a2,
       // i.e. that between vectors [a1,this] and [this,a2].
@@ -396,6 +397,7 @@ namespace mmdb  {
       void  Transform     ( mat44 & tm );
       void  TransformCopy ( mat44 & tm,
                             realtype & xx, realtype & yy, realtype & zz );
+      void  TransformCopy ( mat44 & tm, vect3 & xyz );
       void  TransformSet  ( mat44 & tm,
                             realtype xx, realtype yy, realtype zz );
 
@@ -416,7 +418,7 @@ namespace mmdb  {
       virtual void Copy ( PAtom atom );  // without references in
                                           // residues
 
-      void  SetShortBinary();  // leaves only coordinates in binary files
+      void  SetCompactBinary();  // leaves only coordinates in binary files
       void  write ( io::RFile f );
       void  read  ( io::RFile f );
 
