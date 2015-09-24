@@ -1974,14 +1974,25 @@ namespace mmdb  {
       f.WriteTerLine ( altLoc ,false );
       f.WriteTerLine ( element,false );
       if (WhatIsSet & ASET_Coordinates)  {
+        /*
+        char S[100];
+        sprintf ( S,"%8.3f%8.3f%8.3f",x,y,z );
+        f.WriteFile ( S,24 );
+        */
+        /*
         f.WriteReal ( &x );
         f.WriteReal ( &y );
         f.WriteReal ( &z );
-        /*
-        k = mround(x*1000.0);  f.WriteInt ( &k );
-        k = mround(y*1000.0);  f.WriteInt ( &k );
-        k = mround(z*1000.0);  f.WriteInt ( &k );
         */
+        
+        // Make integer conversion in order to eliminate round-offs
+        // from PDB format %8.3f for coordinates and save space
+        // comparing to real*8 numbers. Writing floats causes
+        // precision loss
+        k = mround(x*10000.0);  f.WriteInt ( &k );
+        k = mround(y*10000.0);  f.WriteInt ( &k );
+        k = mround(z*10000.0);  f.WriteInt ( &k );
+        
         /*
         f.WriteFloat ( &x );
         f.WriteFloat ( &y );
@@ -2072,14 +2083,27 @@ namespace mmdb  {
       f.ReadTerLine ( altLoc ,false );
       f.ReadTerLine ( element,false );
       if (WhatIsSet & ASET_Coordinates)  {
+        /*
+        char S[100];
+        f.ReadFile ( S,24 );
+        GetReal(x,&(S[0]),8);
+        GetReal(y,&(S[8]),8);
+        GetReal(z,&(S[16]),8);
+        */
+        /*
         f.ReadReal ( &x );
         f.ReadReal( &y );
         f.ReadReal ( &z );
-        /*
-        f.ReadInt ( &k );  x = realtype(k)/1000.0;
-        f.ReadInt ( &k );  y = realtype(k)/1000.0;
-        f.ReadInt ( &k );  z = realtype(k)/1000.0;
         */
+        
+        // Make integer conversion in order to eliminate round-offs
+        // from PDB format %8.3f for coordinates and save space
+        // comparing to real*8 numbers. Writing floats causes
+        // precision loss
+        f.ReadInt ( &k );  x = realtype(k)/10000.0;
+        f.ReadInt ( &k );  y = realtype(k)/10000.0;
+        f.ReadInt ( &k );  z = realtype(k)/10000.0;
+        
         /*
         f.ReadFloat ( &x );
         f.ReadFloat ( &y );
