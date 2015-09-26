@@ -195,12 +195,12 @@ namespace mmdb  {
                                   io::GZ_MODE gzipMode=io::GZM_CHECK );
       ERROR_CODE ReadMMDBF1     ( cpstr MMDBLFName,
                                   io::GZ_MODE gzipMode=io::GZM_CHECK );
-      ERROR_CODE ReadMMDBF      ( io::RFile f );
+      ERROR_CODE ReadMMDBF      ( io::File & f );
       ERROR_CODE WriteMMDBF     ( cpstr MMDBRootName,
                                   io::GZ_MODE gzipMode=io::GZM_CHECK );
       ERROR_CODE WriteMMDBF1    ( cpstr MMDBLFName,
                                   io::GZ_MODE gzipMode=io::GZM_CHECK );
-      void       WriteMMDBF     ( io::RFile f );
+      void       WriteMMDBF     ( io::File & f );
 
       void  GetInputBuffer ( pstr Line, int & count );
 

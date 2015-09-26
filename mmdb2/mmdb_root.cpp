@@ -2391,7 +2391,7 @@ namespace mmdb  {
 
   }
 
-  ERROR_CODE Root::ReadMMDBF ( io::RFile f )  {
+  ERROR_CODE Root::ReadMMDBF ( io::File & f )  {
   char  Label[100];
   byte  Version;
 
@@ -2452,7 +2452,7 @@ namespace mmdb  {
     return Error_NoError;
   }
   
-  void Root::WriteMMDBF ( io::RFile f )  {
+  void Root::WriteMMDBF ( io::File & f )  {
   char  Label[100];
   byte  Version=Edition;
     FType = MMDB_FILE_Binary;
