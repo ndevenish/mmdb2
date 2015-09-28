@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    21.11.13   <--  Date of Last Modification.
+//    28.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -47,7 +47,7 @@
 //                  mmdb::Biomolecule
 //                  mmdb::Title       ( MMDB title section )
 //
-//   (C) E. Krissinel 2000-2013
+//   (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -2357,7 +2357,8 @@ namespace mmdb  {
 
 
   void  Title::MakeCIF ( mmcif::PData CIF )  {
-  char DateCIF[20];
+  realtype res;
+  char     DateCIF[20];
 
     if (idCode[0])  {
       CIF->PutDataName ( idCode );
@@ -2378,7 +2379,11 @@ namespace mmdb  {
     } else
       CIF->PutString ( NULL,CIFCAT_DATABASE,CIFTAG_DATE_ORIGINAL );
 
-    CIF->PutReal ( resolution,CIFCAT_REFINE,CIFTAG_LS_D_RES_HIGH,3 );
+    res = GetResolution();
+    if (res>=0.0)
+         CIF->PutReal   ( res,CIFCAT_REFINE,CIFTAG_LS_D_RES_HIGH,3 );
+    else CIF->PutNoData ( mmcif::CIF_NODATA_QUESTION,
+                          CIFCAT_REFINE,CIFTAG_LS_D_RES_HIGH );
 
     obsData  .MakeCIF ( CIF );
     title    .MakeCIF ( CIF );
