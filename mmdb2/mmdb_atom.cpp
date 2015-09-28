@@ -514,7 +514,8 @@ namespace mmdb  {
         strcpy_css ( el,element );
         Loop->AddString ( el,true );
         // (3)
-        Loop->AddString ( label_atom_id  );  // assigned atom name
+        strcpy_css      ( AtName,label_atom_id );
+        Loop->AddString ( AtName );  // assigned atom name
         // (4)
         Loop->AddString  ( altLoc,true );  // alt code
 

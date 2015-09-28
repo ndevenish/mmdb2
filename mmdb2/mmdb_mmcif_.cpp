@@ -4,7 +4,7 @@
 //   CCP4 Coordinate Library: support of coordinate-related
 //   functionality in protein crystallography applications.
 //
-//   Copyright (C) Eugene Krissinel 2000-2013.
+//   Copyright (C) Eugene Krissinel 2000-2015.
 //
 //    This library is free software: you can redistribute it and/or
 //    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    10.05.15   <--  Date of Last Modification.
+//    28.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -1440,8 +1440,9 @@ namespace mmdb  {
               else if (((F[0]=='.') || (F[0]=='?')) &&
                        (!F[1]))        l[i] = IMax(l[i],3);
               else  {
-                if (strchr(F,' '))  m = 2;
-                              else  m = 0;
+                if (strchr(F,' ') || strchr(F,'"') || strchr(F,'\''))
+                      m = 2;
+                else  m = 0;
                 l[i] = IMax(l[i],strlen(F)+m);
               }
             }
@@ -1486,8 +1487,11 @@ namespace mmdb  {
                 }
                 m = 0;
                 k = 0;
-              } else if ((((F[0]=='.') || (F[0]=='?')) && (!F[1])) ||
-                         strchr(F,' '))  {
+              } else if ((((F[0]=='.') ||
+                          (F[0]=='?')) && (!F[1])) ||
+                         strchr(F,' ') ||
+                         strchr(F,'"') ||
+                         strchr(F,'\''))  {
                 f.Write ( pstr(" \"") );
                 f.Write ( F           );
                 f.Write ( pstr("\"")  );
@@ -1518,6 +1522,7 @@ namespace mmdb  {
         }
         if (m) f.LF();
       }
+      f.WriteLine ( pstr("#") );
 
     }
 
