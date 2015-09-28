@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    11.09.13   <--  Date of Last Modification.
+//    28.09.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -133,7 +133,6 @@ namespace mmdb  {
         word  ReadFile     ( void * Buffer, word Count );
         word  CreateRead   ( pstr & Line );
         word  ReadTerLine  ( pstr  Line, bool longLine=false );
-        word  ReadShortLine ( pstr  Line, bool longLine=false );
         bool  WriteFile    ( const void * Buffer, word Count );
         bool  CreateWrite  ( cpstr Line );
         bool  WriteTerLine ( cpstr Line, bool longLine=false );
