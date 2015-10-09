@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    29.01.10   <--  Date of Last Modification.
+//    09.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -254,6 +254,11 @@ namespace mmdb  {
       gzipMode = GZM_NONE;
       gzipIO   = ARCH_NONE;
 
+    }
+
+    void  File::truncate ( long size )  {
+    // call before reset/append
+      ::truncate ( FName,size );
     }
 
     void  File::GetFilePool ( pstr & filePool, word & fileSize )  {

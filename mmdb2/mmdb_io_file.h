@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    28.09.15   <--  Date of Last Modification.
+//    09.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -111,6 +111,7 @@ namespace mmdb  {
         void  GetFilePool ( pstr & filePool, word & fileSize );
 
         inline cpstr FileName() { return FName; }
+        void  truncate    ( long size ); // call before reset/append
         bool  reset       ( bool ReadOnly=false, int retry=0 );
                                 // = true if opened, each retry 1 sec sleep
         bool  erase       ();   // = true if erased
