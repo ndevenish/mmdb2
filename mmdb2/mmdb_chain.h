@@ -570,8 +570,8 @@ namespace mmdb  {
                                            // with matrix TMatrix
 
       int    GetModelNum();
-      PModel GetModel () { return (PModel)model; }
-      cpstr  GetChainID () { return chainID; }
+      PModel GetModel   ()  { return (PModel)model; }
+      cpstr  GetChainID ()  { return chainID;       }
       void   SetChainID ( const ChainID chID );
       cpstr  GetChainID ( pstr  ChID );  // returns /m/c
 

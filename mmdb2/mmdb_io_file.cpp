@@ -44,11 +44,14 @@
 #ifdef  _WIN32
 # include <windows.h>
 # define sleep Sleep
-#else
+#endif
+
+#if !defined _WIN32 || defined __MINGW32__
 # ifndef  __UNISTD_H
 #  include <unistd.h>
 # endif
 #endif
+
 
 #include "mmdb_io_file.h"
 

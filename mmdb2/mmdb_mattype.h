@@ -100,10 +100,12 @@ namespace mmdb  {
   const shortreal MinShortReal = 1.1755e-38;
   const shortreal MaxShortReal = 3.4020e+38;
 
+/*
 #define   strrchr   LastOccurence
 #define   fstrrchr  LastOccurence
 #define   strchr    FirstOccurence
 #define   fstrchr   FirstOccurence
+*/
 
   typedef   char     *         pstr;
   typedef   const char *       cpstr;
