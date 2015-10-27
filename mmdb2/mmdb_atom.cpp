@@ -1949,7 +1949,7 @@ namespace mmdb  {
   AtomName aname;
   Element  elname;
   AltLoc   aloc;
-  pstr     p;
+  cpstr    p;
     p = strrchr ( ID,'/' );
     if (p)  p++;
       else  p = pstr(ID);
