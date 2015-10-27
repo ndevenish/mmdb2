@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    23.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -60,7 +60,7 @@
 //                   ParseResID     ( parses residue ID line          )
 //                   ParseAtomPath  ( parses full atom path           )
 //
-//   (C) E. Krissinel  2000-2013
+//   (C) E. Krissinel  2000-2015
 //
 //  =================================================================
 //
@@ -175,13 +175,13 @@ namespace mmdb  {
                                      int row, int SLen, cpstr DefS );
 
   //  Calculates AI=A^{-1}
-  extern void  Mat4Inverse ( mat44 & A, mat44 & AI );
+  extern void  Mat4Inverse ( const mat44 & A, mat44 & AI );
   //  Calculates A=B*C
-  extern void  Mat4Mult    ( mat44 & A, mat44 & B, mat44 & C );
+  extern void  Mat4Mult    ( mat44 & A, const mat44 & B, const mat44 & C );
   //  Calculates A=B^{-1}*C
-  extern void  Mat4Div1    ( mat44 & A, mat44 & B, mat44 & C );
+  extern void  Mat4Div1    ( mat44 & A, const mat44 & B, const mat44 & C );
   //  Calculates A=B*C^{-1}
-  extern void  Mat4Div2    ( mat44 & A, mat44 & B, mat44 & C );
+  extern void  Mat4Div2    ( mat44 & A, const mat44 & B, const mat44 & C );
   //  Calculates determinant of the rotation part
   extern realtype Mat4RotDet ( mat44 & T );
 
@@ -190,23 +190,23 @@ namespace mmdb  {
   extern void  Mat3Init  ( mat33 & A );
 
   //  Calculates AI=A^{-1}, returns determinant
-  extern realtype Mat3Inverse ( mat33 & A, mat33 & AI );
+  extern realtype Mat3Inverse ( const mat33 & A, mat33 & AI );
 
-  extern bool isMat4Unit ( mat44 & A, realtype eps, bool rotOnly );
+  extern bool isMat4Unit ( const mat44 & A, realtype eps, bool rotOnly );
 
   //  Copies A into AC
-  extern void  Mat4Copy  ( mat44 & A, mat44 & ACopy );
-  extern void  Mat3Copy  ( mat33 & A, mat33 & ACopy );
-  extern bool  isMat4Eq  ( mat44 & A, mat44 & B, realtype eps,
+  extern void  Mat4Copy  ( const mat44 & A, mat44 & ACopy );
+  extern void  Mat3Copy  ( const mat33 & A, mat33 & ACopy );
+  extern bool  isMat4Eq  ( const mat44 & A, const mat44 & B, realtype eps,
                            bool rotOnly );
 
-  extern void TransformXYZ   ( mat44 & T,
-                              realtype & X, realtype & Y, realtype & Z );
-  extern realtype TransformX ( mat44 & T,
+  extern void TransformXYZ   ( const mat44 & T,
+                               realtype & X, realtype & Y, realtype & Z );
+  extern realtype TransformX ( const mat44 & T,
                                realtype X, realtype Y, realtype Z );
-  extern realtype TransformY ( mat44 & T,
+  extern realtype TransformY ( const mat44 & T,
                                realtype X, realtype Y, realtype Z );
-  extern realtype TransformZ ( mat44 & T,
+  extern realtype TransformZ ( const mat44 & T,
                                realtype X, realtype Y, realtype Z );
 
 

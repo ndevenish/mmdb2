@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    07.09.15   <--  Date of Last Modification.
+//    23.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -2847,7 +2847,7 @@ namespace mmdb  {
 
   }
 
-  void  CoorManager::ApplyTransform ( mat44 & TMatrix )  {
+  void  CoorManager::ApplyTransform ( const mat44 & TMatrix )  {
   // simply transforms all coordinates by multiplying with matrix TMatrix
   int i;
     for (i=0;i<nAtoms;i++)

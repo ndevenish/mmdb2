@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    07.09.15   <--  Date of Last Modification.
+//    23.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -566,7 +566,7 @@ namespace mmdb  {
                                // 3: no cell parameters
                                // 0: Ok
 
-      void ApplyTransform   ( mat44 & TMatrix ); // simply transforms all
+      void ApplyTransform   ( const mat44 & TMatrix ); // transforms all
                                             // coordinates by multiplying
                                             // with matrix TMatrix
 

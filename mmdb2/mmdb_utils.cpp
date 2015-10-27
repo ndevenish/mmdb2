@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    23.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -60,7 +60,7 @@
 //                   ParseResID     ( parses residue ID line          )
 //                   ParseAtomPath  ( parses full atom path           )
 //
-//   (C) E. Krissinel  2000-2013
+//   (C) E. Krissinel  2000-2015
 //
 //  =================================================================
 //
@@ -553,7 +553,7 @@ namespace mmdb  {
   }
 
 
-  void  Mat4Inverse ( mat44 & A, mat44 & AI )  {
+  void  Mat4Inverse ( const mat44 & A, mat44 & AI )  {
   //       ***  FORMER RBRINV(A,AI)  ***
   //   Function to invert 4*4 matrices (AI=A^{-1})
   mat44    c;
@@ -601,7 +601,7 @@ namespace mmdb  {
 
   }
 
-  realtype Mat3Inverse ( mat33 & A, mat33 & AI )  {
+  realtype Mat3Inverse ( const mat33 & A, mat33 & AI )  {
   mat33    c,x;
   realtype s;
   int      ii,jj,i,i1,j,j1;
@@ -643,7 +643,7 @@ namespace mmdb  {
 
   }
 
-  void  Mat4Mult ( mat44 & A, mat44 & B, mat44 & C )  {
+  void  Mat4Mult ( mat44 & A, const mat44 & B, const mat44 & C )  {
   //  Calculates A=B*C
   int i,j,k;
     for (i=0;i<4;i++)
@@ -654,7 +654,7 @@ namespace mmdb  {
       }
   }
 
-  void  Mat4Div1 ( mat44 & A, mat44 & B, mat44 & C )  {
+  void  Mat4Div1 ( mat44 & A, const mat44 & B, const mat44 & C )  {
   //  Calculates A=B^{-1}*C
   mat44 B1;
   int   i,j,k;
@@ -669,7 +669,7 @@ namespace mmdb  {
       }
   }
 
-  void  Mat4Div2 ( mat44 & A, mat44 & B, mat44 & C )  {
+  void  Mat4Div2 ( mat44 & A, const mat44 & B, const mat44 & C )  {
   //  Calculates A=B*C^{-1}
   mat44 C1;
   int   i,j,k;
@@ -693,7 +693,7 @@ namespace mmdb  {
     }
   }
 
-  realtype Mat4RotDet ( mat44 & T )  {
+  realtype Mat4RotDet ( const mat44 & T )  {
   //  returns determinant of the rotation part
     return T[0][0]*T[1][1]*T[2][2] +
            T[0][1]*T[1][2]*T[2][0] +
@@ -703,7 +703,7 @@ namespace mmdb  {
            T[2][2]*T[0][1]*T[1][0];
   }
 
-  bool isMat4Unit ( mat44 & A, realtype eps, bool rotOnly )  {
+  bool isMat4Unit ( const mat44 & A, realtype eps, bool rotOnly )  {
   // returns true if A is a unit 4x4 matrix
   int     i,j,k;
   bool B;
@@ -730,21 +730,22 @@ namespace mmdb  {
     }
   }
 
-  void  Mat4Copy ( mat44 & A, mat44 & ACopy )  {
+  void  Mat4Copy ( const mat44 & A, mat44 & ACopy )  {
   int i,j;
     for (i=0;i<4;i++)
       for (j=0;j<4;j++)
         ACopy[i][j] = A[i][j];
   }
 
-  void  Mat3Copy ( mat33 & A, mat33 & ACopy )  {
+  void  Mat3Copy ( const mat33 & A, mat33 & ACopy )  {
   int i,j;
     for (i=0;i<3;i++)
       for (j=0;j<3;j++)
         ACopy[i][j] = A[i][j];
   }
 
-  bool isMat4Eq ( mat44 & A, mat44 & B, realtype eps, bool rotOnly )  {
+  bool isMat4Eq ( const mat44 & A, const mat44 & B, realtype eps,
+                  bool rotOnly )  {
   // returns true if A is equal to B within precision eps
   int  i,j,k;
   bool Eq;
@@ -762,8 +763,8 @@ namespace mmdb  {
   }
 
 
-  void TransformXYZ ( mat44 & T, realtype & X, realtype & Y,
-                                               realtype & Z )  {
+  void TransformXYZ ( const mat44 & T, realtype & X, realtype & Y,
+                                                     realtype & Z )  {
   realtype x1,y1,z1;
     x1 = T[0][0]*X + T[0][1]*Y + T[0][2]*Z + T[0][3];
     y1 = T[1][0]*X + T[1][1]*Y + T[1][2]*Z + T[1][3];
@@ -773,18 +774,18 @@ namespace mmdb  {
     Z = z1;
   }
 
-  realtype TransformX ( mat44 & T, realtype X, realtype Y,
-                                               realtype Z )  {
+  realtype TransformX ( const mat44 & T, realtype X, realtype Y,
+                                                     realtype Z )  {
     return  T[0][0]*X + T[0][1]*Y + T[0][2]*Z + T[0][3];
   }
 
-  realtype TransformY ( mat44 & T, realtype X, realtype Y,
-                                               realtype Z )  {
+  realtype TransformY ( const mat44 & T, realtype X, realtype Y,
+                                                     realtype Z )  {
     return  T[1][0]*X + T[1][1]*Y + T[1][2]*Z + T[1][3];
   }
 
-  realtype TransformZ ( mat44 & T, realtype X, realtype Y,
-                                               realtype Z )  {
+  realtype TransformZ ( const mat44 & T, realtype X, realtype Y,
+                                                     realtype Z )  {
     return  T[2][0]*X + T[2][1]*Y + T[2][2]*Z + T[2][3];
   }
 

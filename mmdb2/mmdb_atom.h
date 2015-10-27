@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    07.09.15   <--  Date of Last Modification.
+//    23.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -393,12 +393,12 @@ namespace mmdb  {
 
 
       // -------  transform coordinates: x := m*x + v
-      void  Transform     ( mat33 & tm, vect3 & v );
-      void  Transform     ( mat44 & tm );
-      void  TransformCopy ( mat44 & tm,
+      void  Transform     ( const mat33 & tm, vect3 & v );
+      void  Transform     ( const mat44 & tm );
+      void  TransformCopy ( const mat44 & tm,
                             realtype & xx, realtype & yy, realtype & zz );
-      void  TransformCopy ( mat44 & tm, vect3 & xyz );
-      void  TransformSet  ( mat44 & tm,
+      void  TransformCopy ( const mat44 & tm, vect3 & xyz );
+      void  TransformSet  ( const mat44 & tm,
                             realtype xx, realtype yy, realtype zz );
 
 
@@ -681,7 +681,7 @@ namespace mmdb  {
 
       //  --------------------------------------------------------------
 
-      void  ApplyTransform ( mat44 & TMatrix );  // transforms all
+      void  ApplyTransform ( const mat44 & TMatrix );  // transforms all
                                                  // coordinates by
                                                  // multiplying with
                                                  // matrix TMatrix

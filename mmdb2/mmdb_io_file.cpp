@@ -109,7 +109,7 @@ namespace mmdb  {
     }
 
     cpstr GetFName ( cpstr FilePath, SYSKEY syskey )  {
-    cpstr P;
+    pstr P;
       if (syskey==syskey_unix)
         P = strrchr(FilePath,'/');
       else if (syskey==syskey_win)
@@ -124,7 +124,7 @@ namespace mmdb  {
     }
 
     cpstr GetFExt ( cpstr FilePath )  {
-    cpstr P;
+    pstr P;
       P = strchr ( GetFName(FilePath),'.');
       if (!P) return &(FilePath[strlen(FilePath)]);
          else return P;

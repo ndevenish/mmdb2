@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    07.09.15   <--  Date of Last Modification.
+//    23.10.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -1774,7 +1774,7 @@ namespace mmdb  {
     WhatIsSet |= ASET_Coordinates | ASET_Occupancy | ASET_tempFactor;
   }
 
-  void  Atom::Transform ( mat33 & tm, vect3 & v ) {
+  void  Atom::Transform ( const mat33 & tm, vect3 & v ) {
   realtype  x1,y1,z1;
     x1 = tm[0][0]*x + tm[0][1]*y + tm[0][2]*z + v[0];
     y1 = tm[1][0]*x + tm[1][1]*y + tm[1][2]*z + v[1];
@@ -1784,7 +1784,7 @@ namespace mmdb  {
     z = z1;
   }
 
-  void  Atom::Transform ( mat44 & tm ) {
+  void  Atom::Transform ( const mat44 & tm ) {
   realtype  x1,y1,z1;
     x1 = tm[0][0]*x + tm[0][1]*y + tm[0][2]*z + tm[0][3];
     y1 = tm[1][0]*x + tm[1][1]*y + tm[1][2]*z + tm[1][3];
@@ -1794,25 +1794,25 @@ namespace mmdb  {
     z = z1;
   }
   
-  void  Atom::TransformCopy ( mat44    & tm,
-                              realtype & xx,
-                              realtype & yy,
-                              realtype & zz )  {
+  void  Atom::TransformCopy ( const mat44 & tm,
+                              realtype    & xx,
+                              realtype    & yy,
+                              realtype    & zz )  {
     xx = tm[0][0]*x + tm[0][1]*y + tm[0][2]*z + tm[0][3];
     yy = tm[1][0]*x + tm[1][1]*y + tm[1][2]*z + tm[1][3];
     zz = tm[2][0]*x + tm[2][1]*y + tm[2][2]*z + tm[2][3];
   }
   
-  void  Atom::TransformCopy ( mat44 & tm, vect3 & xyz )  {
+  void  Atom::TransformCopy ( const mat44 & tm, vect3 & xyz )  {
     xyz[0] = tm[0][0]*x + tm[0][1]*y + tm[0][2]*z + tm[0][3];
     xyz[1] = tm[1][0]*x + tm[1][1]*y + tm[1][2]*z + tm[1][3];
     xyz[2] = tm[2][0]*x + tm[2][1]*y + tm[2][2]*z + tm[2][3];
   }
 
-  void  Atom::TransformSet ( mat44  & tm,
-                              realtype xx,
-                              realtype yy,
-                              realtype zz ) {
+  void  Atom::TransformSet ( const mat44 & tm,
+                             realtype      xx,
+                             realtype      yy,
+                             realtype      zz ) {
     x = tm[0][0]*xx + tm[0][1]*yy + tm[0][2]*zz + tm[0][3];
     y = tm[1][0]*xx + tm[1][1]*yy + tm[1][2]*zz + tm[1][3];
     z = tm[2][0]*xx + tm[2][1]*yy + tm[2][2]*zz + tm[2][3];
@@ -1949,7 +1949,7 @@ namespace mmdb  {
   AtomName aname;
   Element  elname;
   AltLoc   aloc;
-  cpstr    p;
+  pstr     p;
     p = strrchr ( ID,'/' );
     if (p)  p++;
       else  p = pstr(ID);
@@ -3346,7 +3346,7 @@ namespace mmdb  {
 
   }
 
-  void  Residue::ApplyTransform ( mat44 & TMatrix )  {
+  void  Residue::ApplyTransform ( const mat44 & TMatrix )  {
   // transforms all coordinates by multiplying with matrix TMatrix
   int i;
     for (i=0;i<nAtoms;i++)
