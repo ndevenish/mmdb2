@@ -308,6 +308,8 @@ namespace mmdb  {
       realtype GetDist2 ( PAtom a, mat44 & tm );  // tm applies to A
       realtype GetDist2 ( PAtom a, mat33 & r, vect3 & t );// tm applies to A
       realtype GetDist2 ( realtype ax, realtype ay, realtype az );
+      realtype GetDist2 ( mat44 & tm,  // applies to 'this'
+                          realtype ax, realtype ay, realtype az  );
       realtype GetDist2 ( vect3 & xyz );
 
       // GetCosine(a1,a2) calculates cosine of angle a1-this-a2,
