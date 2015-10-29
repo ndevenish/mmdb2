@@ -89,12 +89,12 @@ namespace mmdb  {
     pstr P;
 
       if (syskey==syskey_unix)
-        P = strrchr(FilePath,'/');
+        P = LastOccurence(FilePath,'/');
       else if (syskey==syskey_win)
-        P = strrchr(FilePath,'\\');
+        P = LastOccurence(FilePath,'\\');
       else if (syskey==syskey_all)  {
-        P = strrchr(FilePath,'/');
-        if (!P)  P = strrchr(FilePath,'\\');
+        P = LastOccurence(FilePath,'/');
+        if (!P)  P = LastOccurence(FilePath,'\\');
       } else
         P = NULL;
 
@@ -111,12 +111,12 @@ namespace mmdb  {
     cpstr GetFName ( cpstr FilePath, SYSKEY syskey )  {
     pstr P;
       if (syskey==syskey_unix)
-        P = strrchr(FilePath,'/');
+        P = LastOccurence(FilePath,'/');
       else if (syskey==syskey_win)
-        P = strrchr(FilePath,'\\');
+        P = LastOccurence(FilePath,'\\');
       else if (syskey==syskey_all)  {
-        P = strrchr(FilePath,'/');
-        if (!P)  P = strrchr(FilePath,'\\');
+        P = LastOccurence(FilePath,'/');
+        if (!P)  P = LastOccurence(FilePath,'\\');
       } else
         P = NULL;
       if (!P)  return FilePath;
@@ -125,7 +125,7 @@ namespace mmdb  {
 
     cpstr GetFExt ( cpstr FilePath )  {
     pstr P;
-      P = strchr ( GetFName(FilePath),'.');
+      P = FirstOccurence ( GetFName(FilePath),'.');
       if (!P) return &(FilePath[strlen(FilePath)]);
          else return P;
     }
@@ -230,7 +230,7 @@ namespace mmdb  {
       else if (gzipMode==GZM_ENFORCE_COMPRESS)
         gzipIO = ARCH_COMPRESS;
       else if (gzipMode==GZM_CHECK)  {
-        p = strrchr ( FName,'.' );
+        p = LastOccurence ( FName,'.' );
         if (p)  {
           if (!strcmp(p,".gz"))      gzipIO = ARCH_GZIP;
           else if (!strcmp(p,".Z"))  gzipIO = ARCH_COMPRESS;

@@ -108,11 +108,11 @@ namespace mmdb  {
   realtype V;
 
     p1 = XYZOp;
-    p2 = strchr ( p1,',' );
+    p2 = FirstOccurence ( p1,',' );
     if (!p2)  return SYMOP_WrongSyntax;
     if (n>0)  {
       p1 = p2+1;
-      p2 = strchr ( p1,',' );
+      p2 = FirstOccurence ( p1,',' );
       if (!p2)  return SYMOP_WrongSyntax;
     }
     if (n>1)  {
@@ -526,7 +526,7 @@ namespace mmdb  {
 
     p = S;
     while (*p==' ')  p++;
-    p = strchr ( p,' ' );
+    p = FirstOccurence ( p,' ' );
     if (p)  Nops = mround(strtod(p,NULL));
     if (Nops<=0)  return SYMOP_NoSymOps;
 
@@ -975,10 +975,10 @@ CFile    f;
   while (!f.FileEnd())  {
     f.ReadLine ( S,sizeof(S) );
     if (S[0] && (S[0]!=' '))  {
-      p = strchr ( S,'\'' );
+      p = FirstOccurence ( S,'\'' );
       if (p)  {
         p++;
-        p1 = strchr ( p,'\'' );
+        p1 = FirstOccurence ( p,'\'' );
         if (!p1)  p = NULL;
       }
       if (!p)  {

@@ -1394,7 +1394,7 @@ namespace mmdb  {
       while (*p==' ')  p++;
     }
 
-    if (strchr(p,':') || strchr(p,'['))  {
+    if (FirstOccurence(p,':') || FirstOccurence(p,'['))  {
       // atom name, chemical element and alternative location
       i = 0;
       while (*p)  {
@@ -1690,7 +1690,7 @@ namespace mmdb  {
     strcpy ( atm ,"*" );
     strcpy ( elm ,"*" );
     strcpy ( aloc,"*" );
-    if (wasRes || strchr(p,':') || strchr(p,'['))  {
+    if (wasRes || FirstOccurence(p,':') || FirstOccurence(p,'['))  {
       ParseAtomID ( p,atm,elm,aloc );
     } else if (DefPath)  {
       if (DefPath->isSet & APATH_AtomName)
@@ -1847,7 +1847,7 @@ namespace mmdb  {
       wasRes = (*p=='/');
 
     if (*p=='/')  p++;
-    if ((*p) && (wasRes || strchr(p,':') || strchr(p,'[')))  {
+    if ((*p) && (wasRes || FirstOccurence(p,':') || FirstOccurence(p,'[')))  {
       if (*p)  altLocs[0] = char(0);
       takeWord ( p,ANames,pstr("[:"),l );
       if (!ANames[0])  strcpy ( ANames,"*" );

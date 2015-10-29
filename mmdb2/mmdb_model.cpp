@@ -140,7 +140,7 @@ namespace mmdb  {
       if (N==1)  sprintf ( S,"HETNAM     %3s " ,hetID   );
            else  sprintf ( S,"HETNAM  %2i %3s ",N,hetID );
       while (*p1==' ')  p1++;
-      p2 = strchr(p1,'\n');
+      p2 = FirstOccurence(p1,'\n');
       if (p2)  {
         c   = *p2;
         *p2 = char(0);
@@ -233,7 +233,7 @@ namespace mmdb  {
              else  sprintf ( S,"FORMUL      %3s %2i ",hetID,N );
       }
       S[18] = wc;
-      p2 = strchr(p1,'\n');
+      p2 = FirstOccurence(p1,'\n');
       if (p2)  {
         c   = *p2;
         *p2 = char(0);
@@ -478,7 +478,7 @@ namespace mmdb  {
         /*
         p1 = &(S[15]);
         do  {
-          p2 = strchr ( p1,';' );
+          p2 = FirstOccurence ( p1,';' );
           if (p2)  {
             c   = *p2;
             *p2 = char(0);
@@ -631,7 +631,7 @@ namespace mmdb  {
         }
         p1 = &(F[0]);
         do  {
-          p2 = strchr ( p1,';' );
+          p2 = FirstOccurence ( p1,';' );
           if (p2)  {
             c   = *p2;
             *p2 = char(0);

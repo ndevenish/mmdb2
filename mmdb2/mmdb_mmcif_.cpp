@@ -658,7 +658,7 @@ namespace mmdb  {
         }
 
         // print tag, checking for duplicate tag flag
-        F = strchr ( tag[i],'\1' );
+        F = FirstOccurence ( tag[i],'\1' );
         if (F)  {
           *F = char(0);
           f.Write ( tag[i] );
@@ -669,7 +669,7 @@ namespace mmdb  {
         // print field
         if (field[i])  {  // field is defined
           F = field[i];
-          if (strchr(F,'\n') || strstr(F,"\" "))  {
+          if (FirstOccurence(F,'\n') || strstr(F,"\" "))  {
             f.Write ( pstr("\n;")   );
             f.Write ( F             );
             f.Write ( pstr("\n;\n") );
@@ -683,7 +683,7 @@ namespace mmdb  {
                 f.Write ( pstr(" ") );
             }
             if ((((F[0]=='.') || (F[0]=='?')) && (!F[1])) ||
-                strchr(F,' '))  {
+                FirstOccurence(F,' '))  {
               f.Write ( pstr("\"")   );
               f.Write ( field[i]     );
               f.Write ( pstr("\"\n") );
@@ -1422,7 +1422,7 @@ namespace mmdb  {
           f.Write ( name      );
           f.Write ( pstr(".") );
         }
-        F = strchr ( tag[i],'\1' );
+        F = FirstOccurence ( tag[i],'\1' );
         if (F)  {
           *F = char(0);
           f.WriteLine ( tag[i] );
@@ -1434,13 +1434,13 @@ namespace mmdb  {
           if (field[j])  {
             if (field[j][i])  {
               F = field[j][i];
-              if (strchr(F,'\n') || strstr(F,"\" "))
+              if (FirstOccurence(F,'\n') || strstr(F,"\" "))
                                        l[i] = 10001;
               else if (F[0]==char(2))  l[i] = IMax(l[i],1);
               else if (((F[0]=='.') || (F[0]=='?')) &&
                        (!F[1]))        l[i] = IMax(l[i],3);
               else  {
-                if (strchr(F,' ') || strchr(F,'"') || strchr(F,'\''))
+                if (FirstOccurence(F,' ') || FirstOccurence(F,'"') || FirstOccurence(F,'\''))
                       m = 2;
                 else  m = 0;
                 l[i] = IMax(l[i],strlen(F)+m);
@@ -1489,9 +1489,9 @@ namespace mmdb  {
                 k = 0;
               } else if ((((F[0]=='.') ||
                           (F[0]=='?')) && (!F[1])) ||
-                         strchr(F,' ') ||
-                         strchr(F,'"') ||
-                         strchr(F,'\''))  {
+                         FirstOccurence(F,' ') ||
+                         FirstOccurence(F,'"') ||
+                         FirstOccurence(F,'\''))  {
                 f.Write ( pstr(" \"") );
                 f.Write ( F           );
                 f.Write ( pstr("\"")  );

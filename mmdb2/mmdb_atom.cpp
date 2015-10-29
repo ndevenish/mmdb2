@@ -1959,7 +1959,7 @@ namespace mmdb  {
   Element  elname;
   AltLoc   aloc;
   pstr     p;
-    p = strrchr ( ID,'/' );
+    p = LastOccurence ( ID,'/' );
     if (p)  p++;
       else  p = pstr(ID);
     ParseAtomID ( p,aname,elname,aloc );

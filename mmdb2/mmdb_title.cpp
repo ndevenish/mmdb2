@@ -2266,7 +2266,7 @@ namespace mmdb  {
               if (p)
                 l += strlen_des(&(p[9]))+5;
               else {
-                p = strchr(CLine->Line,':');
+                p = FirstOccurence(CLine->Line,':');
                 if (!p)  {
                   l += strlen_des(CLine->Line)+5;
                   p = CLine->Line;
@@ -2292,7 +2292,7 @@ namespace mmdb  {
                 if (p)
                   strcat_des ( S,&(p[9]) );
                 else {
-                  p = strchr(CLine->Line,':');
+                  p = FirstOccurence(CLine->Line,':');
                   if (!p)  {
                     strcat_des ( S,CLine->Line );
                     p = CLine->Line;

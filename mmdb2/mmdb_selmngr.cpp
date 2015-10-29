@@ -439,7 +439,7 @@ namespace mmdb  {
         i++;
       } else
         L[0] = ' ';
-      if (strchr(S,'['))  L[1] = '"';
+      if (FirstOccurence(S,'['))  L[1] = '"';
                     else  L[1] = ' ';
       L[2] = ',';
       j    = 3;
@@ -918,10 +918,10 @@ namespace mmdb  {
 
     altLocs1 = NULL;
     if (altLocs)  {
-      if (strchr(altLocs,hetIndicator))  {
+      if (FirstOccurence(altLocs,hetIndicator))  {
         CreateCopy ( altLocs1,altLocs );
         DelSpaces  ( altLocs1 );
-        aloc_l = strchr ( altLocs1,hetIndicator );
+        aloc_l = FirstOccurence ( altLocs1,hetIndicator );
         aloc_l[0] = ' ';
         if (aloc_l[1])  aloc_l[1] = ' ';  // instead of comma
         else if (aloc_l!=altLocs1)  {
@@ -1257,10 +1257,10 @@ namespace mmdb  {
 
     altLocs1 = NULL;
     if (altLocs)  {
-      if (strchr(altLocs,hetIndicator))  {
+      if (FirstOccurence(altLocs,hetIndicator))  {
         CreateCopy ( altLocs1,altLocs );
         DelSpaces  ( altLocs1 );
-        aloc_l = strchr ( altLocs1,hetIndicator );
+        aloc_l = FirstOccurence ( altLocs1,hetIndicator );
         aloc_l[0] = ' ';
         if (aloc_l[1])  aloc_l[1] = ' ';  // instead of comma
         else if (aloc_l!=altLocs1)  {
