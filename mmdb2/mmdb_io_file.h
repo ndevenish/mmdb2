@@ -102,13 +102,13 @@ namespace mmdb  {
         // ---- control functions
         //   FileName allows for "stdin", "stdout" and "stderr" as
         // for standard UNIX streams.
-        void  assign      ( cpstr   FileName,
-                            bool    Text=false,
-                            bool    UniB=false,
-                            GZ_MODE gzMode=GZM_NONE );
+        void  assign       ( cpstr   FileName,
+                             bool    Text=false,
+                             bool    UniB=false,
+                             GZ_MODE gzMode=GZM_NONE );
         //   assign for memory IO
-        void  assign      ( word poolSize, word sizeInc, pstr filePool );
-        void  GetFilePool ( pstr & filePool, word & fileSize );
+        void  assign       ( word poolSize, word sizeInc, pstr filePool );
+        void  takeFilePool ( pstr & filePool, word & fileSize );
 
         inline cpstr FileName() { return FName; }
         void  truncate    ( long size ); // call before reset/append
@@ -283,7 +283,7 @@ namespace mmdb  {
 
       private :
         int   gzipIO;
-        bool  StdIO,memIO;
+        bool  StdIO,memIO,ownBuf;
 
     };
 

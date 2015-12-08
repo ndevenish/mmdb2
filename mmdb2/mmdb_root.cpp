@@ -590,7 +590,7 @@ namespace mmdb  {
 
   ERROR_CODE Root::ReadCoorFile ( cpstr CFName, io::GZ_MODE gzipMode )  {
   // auto format recognition
-  int     kin;
+  int  kin;
   bool IBL;
 
     kin = isMMDBBIN ( CFName,gzipMode );
@@ -603,6 +603,7 @@ namespace mmdb  {
     IBL = ((Flags & MMDBF_IgnoreBlankLines)!=0);
     if (isPDB(CFName,gzipMode,IBL)==0)
       return ReadPDBASCII ( CFName,gzipMode );
+
     if (mmcif::isCIF(CFName,gzipMode)==0)
       return ReadCIFASCII ( CFName,gzipMode );
 
@@ -3009,7 +3010,7 @@ namespace mmdb  {
   int isPDB ( cpstr FName, io::GZ_MODE gzipMode,
               bool IgnoreBlankLines )  {
   io::File f;
-  int   rc;
+  int      rc;
 
     f.assign ( FName,false,false,gzipMode );
     if (f.reset(true))  {

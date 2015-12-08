@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    09.10.15   <--  Date of Last Modification.
+//    03.12.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -187,6 +187,7 @@ namespace mmdb  {
       StdIO     = false;
       gzipIO    = ARCH_NONE;
       memIO     = false;
+      ownBuf    = true;
     }
 
     File::~File()  {
@@ -196,7 +197,7 @@ namespace mmdb  {
 
     void  File::FreeBuffer ()  {
       if (IOBuf)  {
-        if (!memIO)  delete[] IOBuf;
+        if (ownBuf)  delete[] IOBuf;
         IOBuf = NULL;
       }
       if (FName)  {
@@ -210,8 +211,8 @@ namespace mmdb  {
     pstr p;
 
       shut();
-
       FreeBuffer();
+      ownBuf = true;
 
       CreateCopy ( FName,FileName );
       StdIO = (!strcmp(FName,"stdin" )) ||
@@ -244,8 +245,7 @@ namespace mmdb  {
 
     void  File::assign ( word poolSize, word sizeInc, pstr filePool )  {
 
-      shut      ();
-      FreeBuffer();
+      shut();
 
       IOBuf    = (pstr)filePool;
       BufLen   = poolSize;
@@ -254,6 +254,7 @@ namespace mmdb  {
       BufCnt   = 0;
 
       memIO    = true;
+      ownBuf   = (IOBuf==NULL);
       gzipMode = GZM_NONE;
       gzipIO   = ARCH_NONE;
 
@@ -261,10 +262,12 @@ namespace mmdb  {
 
     void  File::truncate ( long size )  {
     // call before reset/append
+#ifndef _WIN32
       ::truncate ( FName,size );
+#endif
     }
 
-    void  File::GetFilePool ( pstr & filePool, word & fileSize )  {
+    void  File::takeFilePool ( pstr & filePool, word & fileSize )  {
       if (memIO)  {
         filePool = IOBuf;
         fileSize = FLength;
@@ -272,6 +275,7 @@ namespace mmdb  {
         BufLen   = 0;
         BufCnt   = 0;
         FLength  = 0;
+        ownBuf   = false;
       } else  {
         filePool = NULL;
         fileSize = 0;
@@ -306,7 +310,6 @@ namespace mmdb  {
 
       if (memIO)  {
 
-        shut();
         if (!IOBuf)  return false;
         BufCnt    = 0;
         IOSuccess = true;
@@ -401,11 +404,12 @@ namespace mmdb  {
       if (memIO)  {
 
         shut();
-        FreeBuffer();
+        if (IOBuf)  delete[] IOBuf;
         IOBuf = new char[BufLen];
         BufCnt    = 0;
         FLength   = 0;
-        IOSuccess = true;;
+        IOSuccess = true;
+        ownBuf    = true;
 
       } else  {
 
@@ -468,6 +472,7 @@ namespace mmdb  {
         if (!IOBuf)  {
           IOBuf  = new char[BufLen];
           BufCnt = 0;
+          ownBuf = true;
         }
         FLength   = BufCnt;
         IOSuccess = true;
@@ -635,8 +640,11 @@ namespace mmdb  {
     }
 
     void  File::shut ()  {
+    
+      if (memIO)
+        FreeBuffer();
 
-      if (hFile!=NULL)  {
+      else if (hFile!=NULL)  {
         if (!StdIO)  {
     #ifndef _MSC_VER
           if (gzipIO!=ARCH_NONE)  pclose ( hFile );
@@ -719,6 +727,7 @@ namespace mmdb  {
             BufLen    = ReadFile ( IOBuf,Buf_Size );
             IOSuccess = HSuccess;
             BufCnt    = 0;
+            ownBuf    = true;
           }
           LCnt = 0;
           do {
@@ -1047,8 +1056,9 @@ namespace mmdb  {
             memcpy ( IOB,IOBuf,BufCnt );
             delete[] IOBuf;
           }
-          IOBuf = IOB;
+          IOBuf  = IOB;
           BufLen = Cnt;
+          ownBuf = true;
         }
         memcpy ( &(IOBuf[BufCnt]),Buffer,Count );
         BufCnt += Count;
