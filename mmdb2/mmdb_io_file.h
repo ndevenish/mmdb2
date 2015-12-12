@@ -109,6 +109,9 @@ namespace mmdb  {
         //   assign for memory IO
         void  assign       ( word poolSize, word sizeInc, pstr filePool );
         void  takeFilePool ( pstr & filePool, word & fileSize );
+        inline void GetFilePool ( pstr & filePool, word & fileSize )  {
+          takeFilePool ( filePool,fileSize );
+        }
 
         inline cpstr FileName() { return FName; }
         void  truncate    ( long size ); // call before reset/append
@@ -122,7 +125,7 @@ namespace mmdb  {
         bool  append      ();    // = true if opened
         bool  isOpen      ();
         long  Position    ();
-        inline long  FileLength  () { return FLength; }
+        inline long  FileLength() { return FLength; }
         bool  seek        ( long Position );
         bool  FileEnd     ();
         inline bool  Success   () { return IOSuccess; }
