@@ -102,6 +102,7 @@ namespace mmdb  {
 
         realtype GetSimilarity(); // Score-weighted sequence id
         realtype GetSeqId     (); // Primitive sequence id
+        int      GetNAlign    (); // number of aligned residues
 
         virtual void OutputResults ( io::RFile f, cpstr S, cpstr T  );
 

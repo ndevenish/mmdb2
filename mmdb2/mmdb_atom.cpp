@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    23.10.15   <--  Date of Last Modification.
+//    23.12.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -2912,9 +2912,11 @@ namespace mmdb  {
     return label_asym_id;
   }
 
+/*
   pstr  Residue::GetResName()  {
     return name;
   }
+*/
 
   pstr  Residue::GetLabelCompID()  {
     return label_comp_id;

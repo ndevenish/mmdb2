@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    16.05.14   <--  Date of Last Modification.
+//    23.12.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -40,7 +40,7 @@
 //             mmdb::HetRec         ( HET    records                  )
 //             mmdb::Chain          ( chain class                     )
 //
-//  Copyright (C) E. Krissinel 2000-2013
+//  Copyright (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -52,6 +52,7 @@
 #include "mmdb_model.h"
 #include "mmdb_manager.h"
 #include "mmdb_cifdefs.h"
+#include "mmdb_tables.h"
 
 namespace mmdb  {
 
@@ -1610,6 +1611,25 @@ namespace mmdb  {
 
   }
 
+
+  void Chain::GetCoordSequence ( pstr & seq )  {
+  //   GetCoorSequence(...) returns sequence inferred from list
+  // of residues (which may differ from one in the file header).
+  // The sequence is returned as a null-terminated string 'seq'.
+  // On input, 'seq' should be either NULL or allocated (in which
+  // case the original allocation will be released).
+  int i,j;
+
+    if (seq) delete[] seq;
+    seq = new char[nResidues+1];
+
+    j = 0;
+    for (i=0;i<nResidues;i++)
+      if (residue[i])
+        Get1LetterCode ( residue[i]->GetResName(),seq[j++] );
+    seq[j] = char(0);
+
+  }
 
 
   //  ------------------  Deleting residues  --------------------------

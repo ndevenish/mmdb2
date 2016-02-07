@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    23.10.15   <--  Date of Last Modification.
+//    23.12.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -305,7 +305,7 @@ namespace mmdb  {
       void  CalAtomStatistics ( RAtomStat AS );
 
       realtype GetDist2 ( PAtom a );
-      realtype GetDist2 ( PAtom a, mat44 & tm );  // tm applies to A
+      realtype GetDist2 ( PAtom a, mat44 & tm );  // tm applies to 'a'
       realtype GetDist2 ( PAtom a, mat33 & r, vect3 & t );// tm applies to A
       realtype GetDist2 ( realtype ax, realtype ay, realtype az );
       realtype GetDist2 ( mat44 & tm,  // applies to 'this'
@@ -506,7 +506,7 @@ namespace mmdb  {
       int   GetModelNum   ();
       pstr  GetChainID    ();
       pstr  GetLabelAsymID();
-      pstr  GetResName    ();
+      inline pstr  GetResName() { return name; }
       pstr  GetLabelCompID();
       int   GetAASimilarity ( const ResName resName );
       int   GetAASimilarity ( PResidue res );

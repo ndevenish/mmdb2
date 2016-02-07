@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    23.12.15   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -30,7 +30,7 @@
 //       ~~~~~~~~~
 //  **** Project :  MacroMolecular Data Base (MMDB)
 //       ~~~~~~~~~
-//  **** Classes :  mmdb::ProModel     ( a virtue of Model           )
+//  **** Classes :  mmdb::ProModel     ( abstract Model class         )
 //       ~~~~~~~~~  mmdb::DBReference  ( DBREF  records               )
 //             mmdb::ChainContainer ( container of in-chain classes   )
 //             mmdb::ContainerChain ( chain containered class template)
@@ -40,7 +40,7 @@
 //             mmdb::HetRec         ( HET    records                  )
 //             mmdb::Chain          ( chain class                     )
 //
-//  Copyright (C) E. Krissinel 2000-2013
+//  Copyright (C) E. Krissinel 2000-2015
 //
 //  =================================================================
 //
@@ -462,6 +462,12 @@ namespace mmdb  {
       PResidue GetResidueCreate ( const ResName resName, int seqNum,
                                   const InsCode insCode, bool Enforce );
 
+      //   GetCoorSequence(...) returns sequence inferred from list
+      // of residues (which may differ from one in the file header).
+      // The sequence is returned as a null-terminated string 'seq'.
+      // On input, 'seq' should be either NULL or allocated (in which
+      // case the original allocation will be released).
+      void GetCoordSequence ( pstr & seq );
 
       //  ------------------  Deleting residues  ----------------------
 
@@ -594,8 +600,8 @@ namespace mmdb  {
 
       void  SortResidues   ();
 
-      int      GetNofModResidues();
-      PModRes  GetModResidue    ( int modResNo );  // 0.. on
+      int     GetNofModResidues();
+      PModRes GetModResidue    ( int modResNo );  // 0.. on
 
       bool   isSolventChain   ();
       bool   isInSelection    ( int selHnd );

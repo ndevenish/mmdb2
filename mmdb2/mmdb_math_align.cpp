@@ -538,6 +538,16 @@ namespace mmdb  {
     }
 
 
+    int Alignment::GetNAlign()  {
+    int      i,n,ne;
+      ne = 0;
+      n  = IMin ( strlen(AlgnS),strlen(AlgnT) );
+      for (i=0;i<n;i++)
+        if ((AlgnT[i]!=Space) && (AlgnS[i]==AlgnT[i]))
+          ne++;
+      return ne;
+    }
+
     realtype Alignment::GetSeqId()  {
     realtype s;
     int      i,n,ne,ns,nt;
