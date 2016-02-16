@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    23.12.15   <--  Date of Last Modification.
+//    16.02.16   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -35,7 +35,7 @@
 //  **** Functions: mmdb::BondAngle
 //       ~~~~~~~~~~
 //
-//  Copyright (C) E. Krissinel 2000-2015
+//  Copyright (C) E. Krissinel 2000-2016
 //
 //  =================================================================
 //
@@ -435,6 +435,7 @@ namespace mmdb  {
 
     }
 
+/*
     if (Ter)  {   // ter record
 
       if (!(WhatIsSet & ASET_Coordinates))
@@ -495,7 +496,10 @@ namespace mmdb  {
       // (25)
       Loop->AddNoData ( mmcif::CIF_NODATA_QUESTION );  // no atom name
 
-    } else if (WhatIsSet & (ASET_Coordinates | ASET_CoordSigma))  {
+    } else
+*/
+
+    if (WhatIsSet & (ASET_Coordinates | ASET_CoordSigma))  {
       // normal atom record
 
       if (!WhatIsSet)  return;
