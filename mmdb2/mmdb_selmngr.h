@@ -557,9 +557,9 @@ namespace mmdb  {
       //  otherwise.
 
       int   Select (
-               int   selHnd,    // must be obtained from NewSelection()
+               int  selHnd,    // must be obtained from NewSelection()
                SELECTION_TYPE sType, // selection type STYPE_XXXXX
-               cpstr CID,       // coordinate ID
+               cpstr          CID,   // coordinate ID
                SELECTION_KEY  sKey   // selection key
              );
 
@@ -590,10 +590,11 @@ namespace mmdb  {
       //                             and so on.
       //    "a:,b:..."              - take whole chains a and b and so on
       //    "a:,b:Kp-Lq,..."        - any combination of the above.
-      int  SelectDomain ( int selHnd , cpstr domainRange,
+      int  SelectDomain ( int            selHnd,
+                          cpstr          domainRange,
                           SELECTION_TYPE sType,
                           SELECTION_KEY  sKey,
-                          int modelNo=1 );
+                          int            modelNo=1 );
 
       void  DeleteSelObjects ( int selHnd );
 

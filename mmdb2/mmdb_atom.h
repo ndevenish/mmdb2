@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    23.12.15   <--  Date of Last Modification.
+//    09.03.16   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -35,7 +35,7 @@
 //  **** Functions: mmdb::BondAngle
 //       ~~~~~~~~~~
 //
-//  Copyright (C) E. Krissinel 2000-2015
+//  Copyright (C) E. Krissinel 2000-2016
 //
 //  =================================================================
 //
@@ -506,7 +506,8 @@ namespace mmdb  {
       int   GetModelNum   ();
       pstr  GetChainID    ();
       pstr  GetLabelAsymID();
-      inline pstr  GetResName() { return name; }
+      pstr  GetResName    ();
+//      inline pstr  GetResName() { return name; }
       pstr  GetLabelCompID();
       int   GetAASimilarity ( const ResName resName );
       int   GetAASimilarity ( PResidue res );
