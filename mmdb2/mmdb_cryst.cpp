@@ -1869,12 +1869,12 @@ namespace mmdb  {
 
 
   void  Cryst::PutCell ( realtype cell_a,
-                              realtype cell_b,
-                              realtype cell_c,
-                              realtype cell_alpha,
-                              realtype cell_beta,
-                              realtype cell_gamma,
-                              int      OrthCode ) {
+                         realtype cell_b,
+                         realtype cell_c,
+                         realtype cell_alpha,
+                         realtype cell_beta,
+                         realtype cell_gamma,
+                         int      OrthCode ) {
   //  this function should be used for setting the cell parameters
   int i,j;
 

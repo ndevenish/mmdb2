@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    10.05.15   <--  Date of Last Modification.
+//    27.04.16   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //  **** Classes :  mmdb::Root
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2015
+//  (C) E. Krissinel 2000-2016
 //
 //  =================================================================
 //
@@ -674,23 +674,25 @@ namespace mmdb  {
   //  PDBCLEAN_ATNAME  element names were not available
   //  PDBCLEAN_ALTCODE too many alternative codes encountered.
   //
-  word      RC;
-  int       i,j,k,nal,nch,nr, nch1,nch2;
-  char      c;
-  AltLoc  * altLoc;
-  ChainID * chain_ID;
-  char      aLoc [257];
-  char      chnID[257];
-  int       modN,modl;
   PPAtom    atom1;
   PPChain   Chain1,Chain2;
   PModel    crModel0;
   PChain    crChain0;
   PResidue  crRes0;
+  PPResidue resTable;
   PAtom     A;
-  pstr      chID;
-  ChainID   chainID;
-  bool      NewChain,Done,Solvent;
+  AltLoc  * altLoc;
+  ChainID * chain_ID;
+//  ChainID   chainID;
+//  pstr      chID;
+  char      aLoc [257];
+  char      chnID[257];
+  word      RC;
+  int       i,j,k,nal,nch,nr, nch1,nch2;
+//  int       modN,modl;
+  char      c;
+  bool      Done,Solvent;
+//  bool      NewChain;
 
     RC = 0;
     if (nAtoms<=0)  return RC;
@@ -698,11 +700,43 @@ namespace mmdb  {
     if (CleanKey & PDBCLEAN_ATNAME)
       for (i=0;i<nAtoms;i++)
         if (atom[i])
-          if (!atom[i]->MakePDBAtomName())  RC |= PDBCLEAN_ATNAME;
+          if (!atom[i]->MakePDBAtomName())
+            RC |= PDBCLEAN_ATNAME;
 
     k = -1;
 
     if (CleanKey & PDBCLEAN_TER)  {
+      for (i=0;i<nModels;i++)
+        if (model[i])  {
+          model[i]->GetChainTable ( Chain1,nch1 );
+          for (j=0;j<nch1;j++)
+            if (Chain1[j])  {
+              Chain1[j]->TrimResidueTable();
+              Chain1[j]->GetResidueTable ( resTable,nr );
+              if (nr>0)  {
+                nr--;
+                Done = false;
+                while ((nr>=0) && (!Done))  {
+                  Done = resTable[nr]->isAminoacid();
+                  if (!Done)
+                    nr--;
+                }
+                resTable[nr]->TrimAtomTable();
+                resTable[nr]->GetAtomTable ( atom1,nal );
+                if (nal>0)  {
+                  nal--;
+                  if (!atom1[nal]->isTer())  {
+                    A = newAtom();
+                    A->Copy ( atom1[nal] );
+                    A->MakeTer();
+                    resTable[nr]->AddAtom ( A );
+                  }
+                }
+              }
+            }
+        }
+    
+    /*
       modN     = -1;
       crModel0 = crModel;
       for (i=0;i<nAtoms;i++)
@@ -751,6 +785,9 @@ namespace mmdb  {
       }
 
       crModel = crModel0;
+      
+      */
+
     }
 
 
@@ -2505,23 +2542,23 @@ namespace mmdb  {
   }
 
   void Root::SetCell ( realtype cell_a,
-                            realtype cell_b,
-                            realtype cell_c,
-                            realtype cell_alpha,
-                            realtype cell_beta,
-                            realtype cell_gamma,
-                            int      OrthCode )  {
+                       realtype cell_b,
+                       realtype cell_c,
+                       realtype cell_alpha,
+                       realtype cell_beta,
+                       realtype cell_gamma,
+                       int      OrthCode )  {
     cryst.SetCell ( cell_a,cell_b,cell_c,cell_alpha,cell_beta,
                     cell_gamma,OrthCode );
   }
 
   void Root::PutCell ( realtype cell_a,
-                            realtype cell_b,
-                            realtype cell_c,
-                            realtype cell_alpha,
-                            realtype cell_beta,
-                            realtype cell_gamma,
-                            int      OrthCode )  {
+                       realtype cell_b,
+                       realtype cell_c,
+                       realtype cell_alpha,
+                       realtype cell_beta,
+                       realtype cell_gamma,
+                       int      OrthCode )  {
     cryst.PutCell ( cell_a,cell_b,cell_c,cell_alpha,cell_beta,
                     cell_gamma,OrthCode );
   }

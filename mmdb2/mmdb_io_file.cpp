@@ -151,8 +151,8 @@ namespace mmdb  {
     }
 
     bool FileExists ( cpstr FileName, PFile f )  {
-    PFile  g;
-    bool B;
+    PFile g;
+    bool  B;
       if (FileName)  {
         if (!f)  g = new File();
            else  g = f;
