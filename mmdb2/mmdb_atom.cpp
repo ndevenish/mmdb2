@@ -1712,8 +1712,13 @@ namespace mmdb  {
       element[0] = char(0);
       return false;
     }
+
     UpperCase ( name    );
     UpperCase ( element );
+
+    if (strlen(name)>=4)
+      return true;  // nothing to do
+
     if ((element[0]==' ') && (element[1]==' '))  {
       // element name not given, make one from the atom name
       if ((name[0]>='A') && (name[0]<='Z'))  {

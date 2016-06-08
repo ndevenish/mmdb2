@@ -1130,7 +1130,7 @@ namespace mmdb  {
                SELECTION_TYPE sType, // selection type STYPE_XXXXX
                cpstr          CID,   // coordinate ID
                SELECTION_KEY  sKey   // selection key
-                      )  {
+                          )  {
   InsCode insCode1,insCode2;
   pstr    RNames;
   pstr    ANames;
