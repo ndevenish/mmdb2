@@ -699,6 +699,9 @@ namespace mmdb  {
   PPModel model1;
   int     i,nnat,nat1;
 
+    if (!mdl)
+      return  nModels;
+
     for (i=0;i<nModels;i++)
       if (model[i]==mdl)  return -i;
 

@@ -569,10 +569,10 @@ namespace mmdb  {
       PChain     crChain; // current chain, used at reading a PDB file
       PResidue   crRes;   // current residue, used at reading a PDB file
 
-      bool     Exclude;            // used internally
-      bool     ignoreRemarks;      // used temporarily
-      bool     allowDuplChID;      // used temporarily
-      bool     enforceUniqueChID;  // used temporarily
+      bool       Exclude;            // used internally
+      bool       ignoreRemarks;      // used temporarily
+      bool       allowDuplChID;      // used temporarily
+      bool       enforceUniqueChID;  // used temporarily
 
       void       InitMMDBRoot    ();
       void       FreeCoordMemory ();

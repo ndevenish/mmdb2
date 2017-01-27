@@ -106,8 +106,8 @@ namespace mmdb  {
   }
 
   int UDRegister::RegisterUDData ( psvector & UDRegister,
-                                    int      & nUDR,
-                                    cpstr      UDDataID )  {
+                                   int      & nUDR,
+                                   cpstr      UDDataID )  {
   psvector UDReg;
   int      i,UDDhandle,n;
 
