@@ -755,12 +755,14 @@ namespace mmdb {
 
 
   pstr CreateCopy ( pstr & Dest, cpstr Source )  {
-    if (Dest)  delete[] Dest;
-    if (Source)   {
-      Dest = new char[strlen(Source)+1];
-      strcpy ( Dest,Source );
-    } else
-      Dest = NULL;
+    if (Dest!=Source)  {
+      if (Dest)  delete[] Dest;
+      if (Source)   {
+        Dest = new char[strlen(Source)+1];
+        strcpy ( Dest,Source );
+      } else
+        Dest = NULL;
+    }
     return Dest;
   }
 
