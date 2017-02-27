@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    23.10.15   <--  Date of Last Modification.
+//    27.02.17   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -60,7 +60,7 @@
 //                   ParseResID     ( parses residue ID line          )
 //                   ParseAtomPath  ( parses full atom path           )
 //
-//   (C) E. Krissinel  2000-2015
+//   (C) E. Krissinel  2000-2017
 //
 //  =================================================================
 //
@@ -1647,8 +1647,8 @@ namespace mmdb  {
     }
 
     strcpy ( chn,"*" );
-    if (*p=='/')  p++;
-    if ((*p<'0') || (*p>'9'))  {
+    if ((*p<'0') || (*p>'9') || (*p=='/'))  {
+      if (*p=='/')  p++;
       p1 = p;
       chn[0] = char(0);
       takeWord ( p,chn,pstr("/"),sizeof(ChainID) );
