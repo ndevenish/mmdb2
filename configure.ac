@@ -1,5 +1,5 @@
 
-AC_INIT(mmdb2, 2.0.11) # keep in sync with mmdb2/mmdb_defs.h
+AC_INIT(mmdb2, 2.0.12) # keep in sync with mmdb2/mmdb_defs.h
 
 AC_CONFIG_AUX_DIR(build-aux)
 AC_CONFIG_MACRO_DIR(m4)
