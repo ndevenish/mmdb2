@@ -2516,7 +2516,7 @@ namespace mmdb  {
     return NULL;
   }
 
-  void  CoorManager::MakeBricks ( PPAtom  atmvec,
+  void  CoorManager::MakeBricks ( PPAtom   atmvec,
                                   int      avlen,
                                   realtype Margin,
                                   realtype BrickSize )  {
@@ -3465,15 +3465,15 @@ namespace mmdb  {
 
 
   void  CoorManager::SeekContacts ( PPAtom    AIndex,
-                                         int        ilen,
-                                         int        atomNum,
-                                         realtype   dist1,
-                                         realtype   dist2,
-                                         int        seqDist,
-                                         RPContact contact,
-                                         int &      ncontacts,
-                                         int        maxlen,
-                                         long       group )  {
+                                    int       ilen,
+                                    int       atomNum,
+                                    realtype  dist1,
+                                    realtype  dist2,
+                                    int       seqDist,
+                                    RPContact contact,
+                                    int &     ncontacts,
+                                    int       maxlen,
+                                    long      group )  {
   PContactIndex contactIndex;
   realtype      d12,d22,d2;
   int           i,seq1,seq2;
@@ -3505,16 +3505,16 @@ namespace mmdb  {
 
 
   void  CoorManager::SeekContacts ( PAtom     A,
-                                         PPAtom    AIndex,
-                                         int        ilen,
-                                         realtype   dist1,
-                                         realtype   dist2,
-                                         int        seqDist,
-                                         RPContact contact,
-                                         int &      ncontacts,
-                                         int        maxlen,
-                                         long       group
-                                       )  {
+                                    PPAtom    AIndex,
+                                    int       ilen,
+                                    realtype  dist1,
+                                    realtype  dist2,
+                                    int       seqDist,
+                                    RPContact contact,
+                                    int &     ncontacts,
+                                    int       maxlen,
+                                    long      group
+                                   )  {
   PContactIndex contactIndex;
   realtype      d12,d22,d2;
   int           i,seq1,seq2;
@@ -3545,20 +3545,20 @@ namespace mmdb  {
 
 
   void  CoorManager::SeekContacts ( PPAtom    AIndex1,
-                                         int        ilen1,
-                                         PPAtom    AIndex2,
-                                         int        ilen2,
-                                         realtype   dist1,
-                                         realtype   dist2,
-                                         int        seqDist,
-                                         RPContact contact,
-                                         int &      ncontacts,
-                                         int        maxlen,
-                                         mat44 *    TMatrix,
-                                         long       group,
-                                         int        bricking,
-                                         bool    doSqrt
-                                       )  {
+                                    int       ilen1,
+                                    PPAtom    AIndex2,
+                                    int       ilen2,
+                                    realtype  dist1,
+                                    realtype  dist2,
+                                    int       seqDist,
+                                    RPContact contact,
+                                    int &     ncontacts,
+                                    int       maxlen,
+                                    mat44 *   TMatrix,
+                                    long      group,
+                                    int       bricking,
+                                    bool      doSqrt
+                                  )  {
   //  It is Ok to have NULL pointers in AIndex1 and AIndex2
   PContactIndex contactIndex;
   PPAtom        A1,A2;
@@ -3983,6 +3983,7 @@ namespace mmdb  {
                                     PPMContact & contact,
                                     int          bricking
                                    )  {
+
   //  It is Ok to have NULL pointers in AIndex1 and AIndex2
   PMBrick  B;
   PAtom    A;

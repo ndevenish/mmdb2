@@ -5007,7 +5007,6 @@ namespace mmdb  {
     if (aminoSelHnd>=0) {
 
       manager->GetSelIndex(aminoSelHnd,Res,nres);
-  //   printf ( " nres    %3i " ,nres   );
       if (nres<=0)  return  SSERC_noResidues;
 
     } else {
@@ -5034,8 +5033,8 @@ namespace mmdb  {
 
 
       if (nres<=0)  {
-        delete[]  Res;
-        return  SSERC_noResidues;
+        delete[] Res;
+        return   SSERC_noResidues;
       }
 
    }
@@ -5102,16 +5101,16 @@ namespace mmdb  {
           k = 0;
           while ((hbonds[ir1][k]!=0) && (k<2))  k++;
           hbonds     [ir1][k]   = -irdif;
-      hbond_atoms[ir1][k]   = Res[ir1]->GetAtom ( "N" );
-      hbond_atoms[ir1][k+3] = Res[ir2]->GetAtom ( "O" );
+          hbond_atoms[ir1][k]   = Res[ir1]->GetAtom ( "N" );
+          hbond_atoms[ir1][k+3] = Res[ir2]->GetAtom ( "O" );
         }
         //  test if there is donor Hbond from residue ir2
         if (Res[ir2]->isMainchainHBond(Res[ir1]))  {
-      k = 0;
+          k = 0;
           while ((hbonds[ir2][k]!=0) && (k<2))  k++;
           hbonds     [ir2][k]   = irdif;
-      hbond_atoms[ir2][k]   = Res[ir2]->GetAtom ( "N" );
-      hbond_atoms[ir2][k+3] = Res[ir1]->GetAtom ( "O" );
+          hbond_atoms[ir2][k]   = Res[ir2]->GetAtom ( "N" );
+          hbond_atoms[ir2][k+3] = Res[ir1]->GetAtom ( "O" );
         }
       }
     }
@@ -5123,14 +5122,14 @@ namespace mmdb  {
       k = 0;
       while ((k<=2) && (hbonds[i][k]!=0))  {
         if (hbonds[i][k]==-5)  {
-      Res[i-1]->SSE = SSE_5Turn;
-      Res[i-2]->SSE = SSE_5Turn;
-      Res[i-3]->SSE = SSE_5Turn;
-      Res[i-4]->SSE = SSE_5Turn;
+          Res[i-1]->SSE = SSE_5Turn;
+          Res[i-2]->SSE = SSE_5Turn;
+          Res[i-3]->SSE = SSE_5Turn;
+          Res[i-4]->SSE = SSE_5Turn;
         }
         if (hbonds[i][k]==-3)  {
-      Res[i-1]->SSE = SSE_3Turn;
-      Res[i-2]->SSE = SSE_3Turn;
+          Res[i-1]->SSE = SSE_3Turn;
+          Res[i-2]->SSE = SSE_3Turn;
         }
         k++;
       }

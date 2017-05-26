@@ -1701,8 +1701,11 @@ namespace mmdb  {
       element[2] = char(0);
       return false;
     }
+    
     return true;
+  
   }
+
 
   bool Atom::MakePDBAtomName()  {
   int     i,k;
@@ -3127,8 +3130,8 @@ namespace mmdb  {
   }
 
   PAtom Residue::GetAtom ( const AtomName aname,
-                             const Element  elname,
-                             const AltLoc   aloc )  {
+                           const Element  elname,
+                           const AltLoc   aloc )  {
   int i;
     for (i=0;i<nAtoms;i++)
       if (atom[i])  {

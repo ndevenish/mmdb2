@@ -1114,7 +1114,8 @@ namespace mmdb  {
         if (atom[i] && (!atom[i]->Ter))  {
           if (getElementNo(atom[i]->element)==ELEMENT_UNKNOWN)  {
             strcpy ( atom[i]->element,"  " );
-            atom[i]->MakePDBAtomName();
+            //atom[i]->MakePDBAtomName();
+            atom[i]->RestoreElementName();
           }
         }
     }
@@ -1123,7 +1124,8 @@ namespace mmdb  {
       for (i=0;i<nAtoms;i++)
         if (atom[i] && (!atom[i]->Ter))  {
           strcpy ( atom[i]->element,"  " );
-          atom[i]->MakePDBAtomName();
+          //atom[i]->MakePDBAtomName();
+          atom[i]->RestoreElementName();
         }
     }
 
