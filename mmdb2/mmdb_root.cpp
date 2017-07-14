@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    27.04.16   <--  Date of Last Modification.
+//    13.07.17   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -721,15 +721,17 @@ namespace mmdb  {
                   if (!Done)
                     nr--;
                 }
-                resTable[nr]->TrimAtomTable();
-                resTable[nr]->GetAtomTable ( atom1,nal );
-                if (nal>0)  {
-                  nal--;
-                  if (!atom1[nal]->isTer())  {
-                    A = newAtom();
-                    A->Copy ( atom1[nal] );
-                    A->MakeTer();
-                    resTable[nr]->AddAtom ( A );
+                if (nr>=0)  {
+                  resTable[nr]->TrimAtomTable();
+                  resTable[nr]->GetAtomTable ( atom1,nal );
+                  if (nal>0)  {
+                    nal--;
+                    if (!atom1[nal]->isTer())  {
+                      A = newAtom();
+                      A->Copy ( atom1[nal] );
+                      A->MakeTer();
+                      resTable[nr]->AddAtom ( A );
+                    }
                   }
                 }
               }
