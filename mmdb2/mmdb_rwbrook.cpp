@@ -1582,6 +1582,21 @@ char           charge[10];
                               insCode,altLoc,sgID,element );
 
     if (RC)  {
+      printf ( "Unusual error in MMDB_F_Atom, RC=%i\n"
+               "       fPos=%i\n"
+               "       iSer=%i\n"
+               "   atomName=[%s]\n"
+               "    resName=[%s]\n"
+               "    chainID=[%s]\n"
+               "      iResN=%i\n"
+               "    insCode=[%s]\n"
+               "     altLoc=[%s]\n"
+               "       sgID=[%s]\n"
+               "    element=[%s]\n",
+               RC, channel[k]->fPos,*iSer,
+                   atomName,resName,chainID,*iResN,
+                   insCode,altLoc,sgID,element
+      );
       *iRet  = RWBERR_Error2;  // should never happen
       LastRC = *iRet;
       return;
