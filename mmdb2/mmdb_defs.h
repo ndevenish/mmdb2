@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    23.07.17   <--  Date of Last Modification.
+//    08.11.17   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -48,7 +48,7 @@ namespace mmdb  {
   enum  MMDB_VERSION  {
     MAJOR_VERSION = 2,  //!< MMDB major version
     MINOR_VERSION = 0,  //!< MMDB minor version
-    MICRO_VERSION = 15  //!< MMDB micro version
+    MICRO_VERSION = 16  //!< MMDB micro version
   };
 
   //  =======================  types  =================================
