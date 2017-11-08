@@ -1461,9 +1461,9 @@ namespace mmdb  {
 
 
   PResidue Chain::GetResidueCreate ( const ResName resName,
-                                      int           seqNum,
-                                      const InsCode insCode,
-                                      bool          Enforce )  {
+                                     int           seqNum,
+                                     const InsCode insCode,
+                                     bool          Enforce )  {
   //   Returns pointer on residue, whose name, sequence number and
   // insert code are given in resName, seqNum and insCode, respectively.
   // If such a residue is absent in the chain, one is created at
@@ -1478,8 +1478,13 @@ namespace mmdb  {
               (!strcmp(insCode,residue[i]->insCode)))  {
             if (!strcmp(resName,residue[i]->name))
               return residue[i]; // it is there; just return the pointer
-            else if (!Enforce)
+            else if (!Enforce)  {
+            printf ( "1. sno=%i:%i, ic=[%s]:[%s] name=[%s]:[%s]\n",
+                     seqNum,residue[i]->seqNum,
+                     insCode,residue[i]->insCode,
+                     resName,residue[i]->name );
               return NULL;       // duplicate seqNum and insCode!
+            }
           }
         }
     } else  {
@@ -1489,8 +1494,13 @@ namespace mmdb  {
               (!residue[i]->insCode[0]))  {
             if (!strcmp(resName,residue[i]->name))
               return residue[i]; // it is there; just return the pointer
-            else if (!Enforce)
+            else if (!Enforce)  {
+            printf ( "2. sno=%i:%i, ic=[%s]:[%s] name=[%s]:[%s]\n",
+                     seqNum,residue[i]->seqNum,
+                     insCode,residue[i]->insCode,
+                     resName,residue[i]->name );
               return NULL;       // duplicate seqNum and insCode!
+            }
           }
         }
     }

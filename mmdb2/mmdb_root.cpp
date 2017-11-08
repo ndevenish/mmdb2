@@ -2229,7 +2229,7 @@ namespace mmdb  {
     if (!crRes)  {
       // either the chain or residue was changed -- get a new residue
       crRes = crChain->GetResidueCreate ( resName,seqNum,insCode,
-                                        Flags & MMDBF_IgnoreDuplSeqNum );
+                                          Flags & MMDBF_IgnoreDuplSeqNum );
       if (!crRes)  return  Error_DuplicateSeqNum;
     }
 
