@@ -1558,6 +1558,9 @@ char           charge[10];
     } else
       charge [0] = char(0);
 
+    mmdb::CutSpaces ( resName,mmdb::SCUTKEY_BEGEND );
+
+
     if (FTN_STR(ID)[0]==' ')  {
       atomName[0] = char(0);
 //      if ((FTN_STR(AtNam)[1]=='H') ||
