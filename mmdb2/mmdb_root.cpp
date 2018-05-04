@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    13.07.17   <--  Date of Last Modification.
+//    04.05.18   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //  **** Classes :  mmdb::Root
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2016
+//  (C) E. Krissinel 2000-2018
 //
 //  =================================================================
 //
@@ -3115,6 +3115,7 @@ namespace mmdb  {
     if (!strncasecmp(S,"SLTBRG",6))  return 0;
     if (!strncasecmp(S,"CISPEP",6))  return 0;
     if (!strncasecmp(S,"SITE  ",6))  return 0;
+    if (!strncasecmp(S,"NUMMDL",6))  return 0;
     if (!strncasecmp(S,"CRYST1",6))  return 0;
     if (!strncasecmp(S,"CRYST ",6))  return 0;
     if (!strncasecmp(S,"ORIGX1",6))  return 0;
