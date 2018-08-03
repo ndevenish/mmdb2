@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    03.12.15   <--  Date of Last Modification.
+//    03.08.18   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2015
+//  (C) E. Krissinel 2000-2018
 //
 //  =================================================================
 //
@@ -43,7 +43,9 @@
 
 #ifdef  _WIN32
 # include <windows.h>
+#ifndef sleep
 # define sleep Sleep
+#endif
 #endif
 
 #if !defined _WIN32 || defined __MINGW32__
