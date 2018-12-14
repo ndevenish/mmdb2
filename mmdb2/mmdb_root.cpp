@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    04.05.18   <--  Date of Last Modification.
+//    14.12.18   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -737,7 +737,7 @@ namespace mmdb  {
               }
             }
         }
-    
+
     /*
       modN     = -1;
       crModel0 = crModel;
@@ -787,7 +787,7 @@ namespace mmdb  {
       }
 
       crModel = crModel0;
-      
+
       */
 
     }
@@ -1536,7 +1536,7 @@ namespace mmdb  {
     return false;
   }
 
-  
+
   int  Root::CrystReady()  {
   //    Returns flags:
   // CRRDY_Complete       if crystallographic information is complete
@@ -2102,6 +2102,7 @@ namespace mmdb  {
 
   }
 
+
   ERROR_CODE Root::CheckAtomPlace ( int index, mmcif::PLoop Loop )  {
   //   Version of CheckAtomPlace(..) for reading from CIF file.
   ResName  resName,label_comp_id;
@@ -2115,14 +2116,16 @@ namespace mmdb  {
     k = index-1;
   //  if (!CIFGetInteger1(seqNum,Loop,CIFTAG_LABEL_SEQ_ID,k))
     if (!CIFGetInteger1(seqNum,Loop,CIFTAG_AUTH_SEQ_ID,k))
-      CIFGetString  ( insCode,Loop,CIFTAG_NDB_HELIX_CLASS_PDB,k,
+      //CIFGetString  ( insCode,Loop,CIFTAG_NDB_HELIX_CLASS_PDB,k,
+      CIFGetString  ( insCode,Loop,CIFTAG_PDBX_PDB_INS_CODE,k, // fix from B. Lohkamp
                       sizeof(InsCode),pstr("") );
     else  {
       F = Loop->GetString ( CIFTAG_GROUP_PDB,k,RC );
       if ((!F) || (RC)) return  Error_CIF_EmptyRow;
       if (strcmp(F,"TER"))  {
         seqNum = MinInt4;  // only at reading CIF we allow this
-        CIFGetString ( insCode,Loop,CIFTAG_NDB_HELIX_CLASS_PDB,k,
+        //CIFGetString ( insCode,Loop,CIFTAG_NDB_HELIX_CLASS_PDB,k,
+        CIFGetString ( insCode,Loop,CIFTAG_PDBX_PDB_INS_CODE,k, // fix from B. Lohkamp
                        sizeof(InsCode),pstr("") );
       } else  { // we allow for empty TER card here
         seqNum     = 0;
@@ -2493,7 +2496,7 @@ namespace mmdb  {
       return Error_CantOpenFile;
     return Error_NoError;
   }
-  
+
   void Root::WriteMMDBF ( io::File & f )  {
   char  Label[100];
   byte  Version=Edition;
@@ -2503,7 +2506,7 @@ namespace mmdb  {
     f.WriteByte ( &Version );
     write ( f );
   }
-  
+
 
   pstr  Root::GetEntryID()  {
     return title.idCode;
@@ -2897,7 +2900,7 @@ namespace mmdb  {
 
     f.WriteByte ( &Version );
     f.WriteWord ( &Flags   );
-    
+
     f.WriteInt  ( &nAtoms );
     for (i=0;i<nAtoms;i++)  {
       if (atom[i])  k = 1;
@@ -2913,30 +2916,30 @@ namespace mmdb  {
       f.WriteInt ( &k );
       if (model[i]) model[i]->write ( f );
     }
-    
+
     if (Flags & MMDBF_MakeCompactBinary)  {
-      
+
       f.WriteTerLine ( title.idCode,false      );
       f.WriteReal    ( &title.resolution );
       title.title.write ( f );
       cryst      .write ( f );
-      
+
     } else  {
 
       UDData::write ( f );
-  
+
       title     .write ( f );
       cryst     .write ( f );
       udRegister.write ( f );
       DefPath   .write ( f );
-  
+
       SA      .write ( f );
       Footnote.write ( f );
       SB      .write ( f );
       SC      .write ( f );
-  
+
       StreamWrite ( f,CIF );
-    
+
     }
 
   }
@@ -2950,7 +2953,7 @@ namespace mmdb  {
 
     f.ReadByte ( &Version );
     f.ReadWord ( &Flags   );
-    
+
     //   It is important to read atoms before models,
     // residues and chains!
     f.ReadInt  ( &nAtoms );
@@ -2984,28 +2987,28 @@ namespace mmdb  {
       }
     }
     if (Flags & MMDBF_MakeCompactBinary)  {
-      
+
       f.ReadTerLine ( title.idCode,false      );
       f.ReadReal    ( &title.resolution );
       title.title.read ( f );
       cryst      .read ( f );
-      
+
     } else  {
-  
+
       UDData::read ( f );
-  
+
       title     .read ( f );
       cryst     .read ( f );
       udRegister.read ( f );
       DefPath   .read ( f );
-  
+
       SA      .read ( f );
       Footnote.read ( f );
       SB      .read ( f );
       SC      .read ( f );
-  
+
       StreamRead ( f,CIF );
-      
+
     }
 
   }
