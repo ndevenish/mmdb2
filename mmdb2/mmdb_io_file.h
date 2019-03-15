@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    09.10.15   <--  Date of Last Modification.
+//    15.03.19   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2015
+//  (C) E. Krissinel 2000-2019
 //
 //  =================================================================
 //
@@ -78,11 +78,12 @@ namespace mmdb  {
     // ===================  Auxilary Functions  ========================
 
 
-    extern cpstr GetFPath  ( pstr  FilePath, SYSKEY syskey=syskey_unix );
-    extern cpstr GetFName  ( cpstr FilePath, SYSKEY syskey=syskey_unix );
-    extern cpstr GetFExt   ( cpstr FilePath );
-    extern cpstr ChangeExt ( pstr  FilePath, cpstr newExt,
-                                             SYSKEY syskey=syskey_unix );
+    extern cpstr GetFPath     ( pstr  FilePath, SYSKEY syskey=syskey_all );
+    extern cpstr GetFName     ( cpstr FilePath, SYSKEY syskey=syskey_all );
+    extern cpstr GetFExt      ( cpstr FilePath );
+    extern cpstr ForceUnixSep ( pstr  FilePath );
+    extern cpstr ChangeExt    ( pstr  FilePath, cpstr newExt,
+                                                SYSKEY syskey=syskey_all );
     extern cpstr FileError        ( int   ErrCode     );
     extern void  RemoveDelimiters ( pstr  S, int SLen );
     extern void  PickOutNumber    ( cpstr S, pstr SV, int SLen, int & j );

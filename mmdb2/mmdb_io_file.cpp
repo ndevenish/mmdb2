@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    03.08.18   <--  Date of Last Modification.
+//    15.03.19   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2018
+//  (C) E. Krissinel 2000-2019
 //
 //  =================================================================
 //
@@ -152,6 +152,16 @@ namespace mmdb  {
       return FilePath;
     }
 
+    cpstr ForceUnixSep ( pstr FilePath )  {
+      pstr p = FilePath;
+      while (*p)  {
+        if (*p=='\\')  *p = '/';
+        p++;
+      }
+      return FilePath;
+    }
+
+
     bool FileExists ( cpstr FileName, PFile f )  {
     PFile g;
     bool  B;
@@ -266,6 +276,8 @@ namespace mmdb  {
     // call before reset/append
 #ifndef _WIN32
       ::truncate ( FName,size );
+#else
+      (void)size;
 #endif
     }
 
