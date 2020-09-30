@@ -661,8 +661,16 @@ namespace mmdb  {
       else if (hFile!=NULL)  {
         if (!StdIO)  {
     #ifndef _MSC_VER
-          if (gzipIO!=ARCH_NONE)  pclose ( hFile );
-                            else  fclose ( hFile );
+          if (gzipIO!=ARCH_NONE) {
+            // make sure that pipe works to the very end 
+            word blen = 10000;
+            pstr buf  = new char[blen];
+            while (!FileEnd())
+              ReadLine ( buf,blen-2 );
+            delete[] buf;
+            pclose ( hFile );
+          } else
+            fclose ( hFile );
     #else
           fclose ( hFile );
     #endif
@@ -678,8 +686,8 @@ namespace mmdb  {
     }
 
     word  File::ReadLine ( pstr Line, word MaxLen )  {
-    word     LCnt;
-    int      Done;
+    word  LCnt;
+    int   Done;
     bool  HSuccess = IOSuccess;
 
       if (memIO)  {

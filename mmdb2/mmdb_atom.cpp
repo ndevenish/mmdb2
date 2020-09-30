@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    09.03.16   <--  Date of Last Modification.
+//    29.09.20   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -35,7 +35,7 @@
 //  **** Functions: mmdb::BondAngle
 //       ~~~~~~~~~~
 //
-//  Copyright (C) E. Krissinel 2000-2016
+//  Copyright (C) E. Krissinel 2000-2020
 //
 //  =================================================================
 //
@@ -660,6 +660,13 @@ namespace mmdb  {
         Loop->AddReal ( su12 );
         Loop->AddReal ( su13 );
         Loop->AddReal ( su23 );
+      } else  {
+        Loop->AddNoData ( mmcif::CIF_NODATA_DOT );
+        Loop->AddNoData ( mmcif::CIF_NODATA_DOT );
+        Loop->AddNoData ( mmcif::CIF_NODATA_DOT );
+        Loop->AddNoData ( mmcif::CIF_NODATA_DOT );
+        Loop->AddNoData ( mmcif::CIF_NODATA_DOT );
+        Loop->AddNoData ( mmcif::CIF_NODATA_DOT );
       }
 
     }
