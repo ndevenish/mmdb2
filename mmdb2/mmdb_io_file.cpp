@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    15.03.19   <--  Date of Last Modification.
+//    02.10.20   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2019
+//  (C) E. Krissinel 2000-2020
 //
 //  =================================================================
 //
@@ -185,21 +185,22 @@ namespace mmdb  {
     #define ARCH_ENFORCE   3
 
     File::File ( word BufSize )  {
-      Buf_Size  = BufSize;
-      BufLen    = 0;
-      BufInc    = 1;
-      EofFile   = false;
-      hFile     = NULL;
-      FName     = NULL;
-      BufCnt    = 0;
-      IOBuf     = NULL;
-      IOSuccess = true;
-      TextMode  = false;
-      UniBin    = false;
-      StdIO     = false;
-      gzipIO    = ARCH_NONE;
-      memIO     = false;
-      ownBuf    = true;
+      Buf_Size   = BufSize;
+      BufLen     = 0;
+      BufInc     = 1;
+      EofFile    = false;
+      hFile      = NULL;
+      FName      = NULL;
+      BufCnt     = 0;
+      IOBuf      = NULL;
+      IOSuccess  = true;
+      TextMode   = false;
+      UniBin     = false;
+      StdIO      = false;
+      gzipIO     = ARCH_NONE;
+      memIO      = false;
+      ownBuf     = true;
+      write_mode = false;
     }
 
     File::~File()  {
@@ -406,6 +407,8 @@ namespace mmdb  {
 
       }
 
+      write_mode = false;
+
       return  IOSuccess;
 
     }
@@ -470,6 +473,8 @@ namespace mmdb  {
         IOSuccess = (hFile!=NULL);
 
       }
+
+      write_mode = true;
 
       return  IOSuccess;
 
@@ -536,6 +541,8 @@ namespace mmdb  {
         IOSuccess = hFile!=NULL;
 
       }
+
+      write_mode = true;
 
       return  IOSuccess;
 
@@ -654,7 +661,7 @@ namespace mmdb  {
     }
 
     void  File::shut ()  {
-    
+
       if (memIO)
         FreeBuffer();
 
@@ -662,12 +669,14 @@ namespace mmdb  {
         if (!StdIO)  {
     #ifndef _MSC_VER
           if (gzipIO!=ARCH_NONE) {
-            // make sure that pipe works to the very end 
-            word blen = 10000;
-            pstr buf  = new char[blen];
-            while (!FileEnd())
-              ReadLine ( buf,blen-2 );
-            delete[] buf;
+            if (!write_mode)  {
+              // make sure that pipe works to the very end
+              word blen = 10000;
+              pstr buf  = new char[blen];
+              while (!FileEnd())
+                ReadLine ( buf,blen-2 );
+              delete[] buf;
+            }
             pclose ( hFile );
           } else
             fclose ( hFile );

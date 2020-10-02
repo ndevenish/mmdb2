@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    15.03.19   <--  Date of Last Modification.
+//    02.10.20   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -31,7 +31,7 @@
 //  **** Classes :  mmdb::io::File  - file I/O Support.
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2019
+//  (C) E. Krissinel 2000-2020
 //
 //  =================================================================
 //
@@ -279,6 +279,7 @@ namespace mmdb  {
         long    FLength;
         bool    IOSuccess;
         int     ErrCode;
+        bool    write_mode;
 
         void  FreeBuffer   ();
         void  _ReadColumns ( int & DLen, pstr S, int SLen,
@@ -303,4 +304,3 @@ namespace mmdb  {
 
 
 #endif
-
