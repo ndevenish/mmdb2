@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    29.09.20   <--  Date of Last Modification.
+//    24.02.21   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //
 //      Definition of types, constants and important classes.
 //
-//  (C) E. Krissinel 2000-2020
+//  (C) E. Krissinel 2000-2021
 //
 //  =================================================================
 //
@@ -48,7 +48,7 @@ namespace mmdb  {
   enum  MMDB_VERSION  {
     MAJOR_VERSION = 2,  //!< MMDB major version
     MINOR_VERSION = 0,  //!< MMDB minor version
-    MICRO_VERSION = 21  //!< MMDB micro version
+    MICRO_VERSION = 22  //!< MMDB micro version
   };
 
   //  =======================  types  =================================

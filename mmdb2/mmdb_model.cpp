@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    11.09.15   <--  Date of Last Modification.
+//    24.02.21   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -46,7 +46,7 @@
 //                  mmdb::CisPep          ( CisPep data                )
 //                  mmdb::Model        ( PDB model                     )
 //
-//  Copyright (C) E. Krissinel 2000-2015
+//  Copyright (C) E. Krissinel 2000-2021
 //
 //  =================================================================
 //
@@ -4420,6 +4420,9 @@ namespace mmdb  {
 
     FreeMemory();
 
+      void  Model::Copy ( PModel model )  {
+      //  modify both Model::_copy and Model::Copy methods simultaneously!
+
     if (model)  {
 
       serNum       = model->serNum;
@@ -4543,6 +4546,8 @@ namespace mmdb  {
       turns       .Copy ( &(model->turns)        );
       links       .Copy ( &(model->links)        );
       linkRs      .Copy ( &(model->linkRs)       );
+      cisPeps     .Copy ( &(model->cisPeps)      );
+
 
     }
 
@@ -5291,14 +5296,14 @@ namespace mmdb  {
   int  i,k;
   byte Version=4;
   bool compactBinary = false;
-  
+
     PManager M = GetCoordHierarchy();
     if (M)
       compactBinary = M->isCompactBinary();
 
     f.WriteByte ( &Version       );
     f.WriteBool ( &compactBinary );
-    
+
     f.WriteInt ( &serNum  );
     f.WriteInt ( &nChains );
 
@@ -5312,14 +5317,14 @@ namespace mmdb  {
     if (!compactBinary)  {
 
       ProModel::write ( f );
-  
+
       hetCompounds.write ( f );
       helices     .write ( f );
       sheets      .write ( f );
       turns       .write ( f );
       links       .write ( f );
       linkRs      .write ( f );
-      
+
     }
 
   }
@@ -5333,7 +5338,7 @@ namespace mmdb  {
 
     f.ReadByte ( &Version       );
     f.ReadBool ( &compactBinary );
-    
+
     f.ReadInt ( &serNum  );
     f.ReadInt ( &nChains );
     nChainsAlloc = nChains;
@@ -5350,16 +5355,16 @@ namespace mmdb  {
     }
 
     if (!compactBinary)  {
-      
+
       ProModel::read ( f );
-  
+
       hetCompounds.read ( f );
       helices     .read ( f );
       sheets      .read ( f );
       turns       .read ( f );
       links       .read ( f );
       linkRs      .read ( f );
-      
+
     }
 
   }
