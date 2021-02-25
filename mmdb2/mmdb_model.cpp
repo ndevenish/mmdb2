@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    24.02.21   <--  Date of Last Modification.
+//    25.02.21   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -4420,9 +4420,6 @@ namespace mmdb  {
 
     FreeMemory();
 
-      void  Model::Copy ( PModel model )  {
-      //  modify both Model::_copy and Model::Copy methods simultaneously!
-
     if (model)  {
 
       serNum       = model->serNum;
@@ -4547,7 +4544,6 @@ namespace mmdb  {
       links       .Copy ( &(model->links)        );
       linkRs      .Copy ( &(model->linkRs)       );
       cisPeps     .Copy ( &(model->cisPeps)      );
-
 
     }
 
