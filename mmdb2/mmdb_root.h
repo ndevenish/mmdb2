@@ -133,7 +133,7 @@ namespace mmdb  {
   DefineClass(Root);
   DefineStreamFunctions(Root);
 
-  class Root : public UDData  {
+  class MMDB_DL_EXPORT Root : public UDData  {
 
     friend class Model;
     friend class Chain;
@@ -626,16 +626,16 @@ namespace mmdb  {
   //     2   if file FName is likely a MMDB BIN (binary) file,
   //         but of a wrong edition (i.e. produced by a lower
   //         version of MMDB).
-  extern int isMMDBBIN ( cpstr FName, io::GZ_MODE gzipMode=io::GZM_CHECK );
-  extern int isMMDBBIN ( io::RFile f );
+  extern MMDB_DL_EXPORT int isMMDBBIN ( cpstr FName, io::GZ_MODE gzipMode=io::GZM_CHECK );
+  extern MMDB_DL_EXPORT int isMMDBBIN ( io::RFile f );
 
   //  isPDB will return
   //    -1   if file FName does not exist
   //     0   if file FName is likely a PDB file
   //     1   if file FName is not a PDB file
-  extern int isPDB ( cpstr FName, io::GZ_MODE gzipMode=io::GZM_CHECK,
+  extern MMDB_DL_EXPORT int isPDB ( cpstr FName, io::GZ_MODE gzipMode=io::GZM_CHECK,
                      bool IgnoreBlankLines=false );
-  extern int isPDB ( io::RFile f, bool IgnoreBlankLines=false );
+  extern MMDB_DL_EXPORT int isPDB ( io::RFile f, bool IgnoreBlankLines=false );
 
 }  // namespace mmdb
 

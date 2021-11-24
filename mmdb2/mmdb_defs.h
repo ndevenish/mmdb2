@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    24.02.21   <--  Date of Last Modification.
+//    29.09.20   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //
 //      Definition of types, constants and important classes.
 //
-//  (C) E. Krissinel 2000-2021
+//  (C) E. Krissinel 2000-2020
 //
 //  =================================================================
 //
@@ -48,7 +48,7 @@ namespace mmdb  {
   enum  MMDB_VERSION  {
     MAJOR_VERSION = 2,  //!< MMDB major version
     MINOR_VERSION = 0,  //!< MMDB minor version
-    MICRO_VERSION = 22  //!< MMDB micro version
+    MICRO_VERSION = 21  //!< MMDB micro version
   };
 
   //  =======================  types  =================================
@@ -108,7 +108,7 @@ namespace mmdb  {
 
   //   ANY_RES should be used in selection functions for specifying
   // "any residue" to select. Defined in mmdb_selmngr.cpp
-  extern const int ANY_RES;
+  extern MMDB_DL_IMPORT(const int) ANY_RES;
 
   //    PRNK_XXXXX are the print keys. PRNK_Silent supresses all print
   // inside mmdb_xxxx unless specifically ordered or catastrophic.

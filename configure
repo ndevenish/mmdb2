@@ -9515,7 +9515,7 @@ fi
 	  else
 	    sed -e 's/\\\\\\\(.*\\\\\\\)/-link\\\ -EXPORT:\\\\\\\1/' < $export_symbols > $output_objdir/$soname.exp;
 	  fi~
-	  $CC -o $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~
+	  $CC -o $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" //link //DLL //IMPLIB:"$tool_output_objdir$libname.lib"~
 	  linknames='
 	# The linker will not automatically build a static lib if we build a DLL.
 	# _LT_TAGVAR(old_archive_from_new_cmds, )='true'
@@ -10497,11 +10497,11 @@ cygwin* | mingw* | pw32* | cegcc*)
     dynamic_linker='Win32 ld.exe'
     ;;
 
-  *,cl*)
+  *,cl* | *,ifort*)
     # Native MSVC
     libname_spec='$name'
     soname_spec='${libname}`echo ${release} | $SED -e 's/[.]/-/g'`${versuffix}${shared_ext}'
-    library_names_spec='${libname}.dll.lib'
+    library_names_spec='${libname}.lib'
 
     case $build_os in
     mingw*)
@@ -12873,7 +12873,7 @@ fi
 	    else
 	      $SED -e 's/\\\\\\\(.*\\\\\\\)/-link\\\ -EXPORT:\\\\\\\1/' < $export_symbols > $output_objdir/$soname.exp;
 	    fi~
-	    $CC -o $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~
+	    $CC -o $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" //link //DLL //IMPLIB:"$tool_output_objdir$libname.lib"~
 	    linknames='
 	  # The linker will not automatically build a static lib if we build a DLL.
 	  # _LT_TAGVAR(old_archive_from_new_cmds, CXX)='true'
@@ -14750,11 +14750,11 @@ cygwin* | mingw* | pw32* | cegcc*)
     dynamic_linker='Win32 ld.exe'
     ;;
 
-  *,cl*)
+  *,cl* | *,ifort*)
     # Native MSVC
     libname_spec='$name'
     soname_spec='${libname}`echo ${release} | $SED -e 's/[.]/-/g'`${versuffix}${shared_ext}'
-    library_names_spec='${libname}.dll.lib'
+    library_names_spec='${libname}.lib'
 
     case $build_os in
     mingw*)
