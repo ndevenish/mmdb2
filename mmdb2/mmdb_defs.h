@@ -4,7 +4,7 @@
 //   CCP4 Coordinate Library: support of coordinate-related
 //   functionality in protein crystallography applications.
 //
-//   Copyright (C) Eugene Krissinel 2000-2018.
+//   Copyright (C) Eugene Krissinel 2000-2022.
 //
 //    This library is free software: you can redistribute it and/or
 //    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    29.09.20   <--  Date of Last Modification.
+//    09.02.22   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //
 //      Definition of types, constants and important classes.
 //
-//  (C) E. Krissinel 2000-2020
+//  (C) E. Krissinel 2000-2022
 //
 //  =================================================================
 //
@@ -48,7 +48,7 @@ namespace mmdb  {
   enum  MMDB_VERSION  {
     MAJOR_VERSION = 2,  //!< MMDB major version
     MINOR_VERSION = 0,  //!< MMDB minor version
-    MICRO_VERSION = 21  //!< MMDB micro version
+    MICRO_VERSION = 22  //!< MMDB micro version
   };
 
   //  =======================  types  =================================
