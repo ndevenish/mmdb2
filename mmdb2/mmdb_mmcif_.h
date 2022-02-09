@@ -4,7 +4,7 @@
 //   CCP4 Coordinate Library: support of coordinate-related
 //   functionality in protein crystallography applications.
 //
-//   Copyright (C) Eugene Krissinel 2000-2013.
+//   Copyright (C) Eugene Krissinel 2000-2022.
 //
 //    This library is free software: you can redistribute it and/or
 //    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    12.09.13   <--  Date of Last Modification.
+//    09.02.22   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -36,7 +36,7 @@
 //                  mmdb::mmcif::Data     ( mmCIF data block  )
 //                  mmdb::mmcif::File     ( mmCIF file        )
 //
-//  (C) E. Krissinel 2000-2013
+//  (C) E. Krissinel 2000-2022
 //
 //  =================================================================
 //
@@ -1621,7 +1621,7 @@ namespace mmdb  {
         /*!
         \code
         mmcif::Data data;
-        char       errLog[500];
+        char       errLog[4096];
         int        rc;
            rc = data.ReadMMCIFData  ( "myfile.cif" );
            if (rc<0)
@@ -1640,7 +1640,7 @@ namespace mmdb  {
         /// \brief Reads sequential mmCIF data blocks from file.
         /// \param RCFile reference to a CFile object opened on a file
         /// \param S buffer string which represent a sliding read window.
-        ///          The string should be at least 500 characters long,
+        ///          The string should be at least 4096 characters long,
         ///          initialized with empty-string value before first read,
         ///          and passed unchanged between the reads
         /// \param lcount line counter, should be set zero before first
@@ -2142,5 +2142,3 @@ namespace mmdb  {
 
 
 #endif
-
-

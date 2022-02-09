@@ -4,7 +4,7 @@
 //   CCP4 Coordinate Library: support of coordinate-related
 //   functionality in protein crystallography applications.
 //
-//   Copyright (C) Eugene Krissinel 2000-2013.
+//   Copyright (C) Eugene Krissinel 2000-2022.
 //
 //    This library is free software: you can redistribute it and/or
 //    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 //
 //  =================================================================
 //
-//    24.07.15   <--  Date of Last Modification.
+//    09.02.22   <--  Date of Last Modification.
 //                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  -----------------------------------------------------------------
 //
@@ -33,7 +33,7 @@
 //  **** Classes :  mmdb::Root
 //       ~~~~~~~~~
 //
-//  (C) E. Krissinel 2000-2015
+//  (C) E. Krissinel 2000-2022
 //
 //  =================================================================
 //
@@ -332,7 +332,7 @@ namespace mmdb  {
       bool GetNewChainID ( int modelNo, ChainID chID, int length=1 );
 
       //  ---------------  Enquiring -------------------------------
-      
+
       bool isCompactBinary();
 
       int   CrystReady();
@@ -562,7 +562,7 @@ namespace mmdb  {
 
       //  input buffer
       int          lcount;  // input line counter
-      char         S[500];  // read buffer
+      char         S[4096];  // read buffer
       mmcif::PData CIF;     // CIF file manager
 
       PModel     crModel; // current model, used at reading a PDB file
@@ -640,4 +640,3 @@ namespace mmdb  {
 }  // namespace mmdb
 
 #endif
-
